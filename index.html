@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <title>NoteMinder</title>
     <link rel="shortcut icon" href="img/Note-48.png" />
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="css/hover.css" rel="stylesheet" media="all">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -15,38 +14,28 @@
             <ul class="note-folders">
                 <li href="#">Folder 1</li>
             </ul>
-            <button class="button hvr-bounce-in" id="add-folder-button">Create New Folder </button>
+            <button class="btn"><i class="fa fa-plus"></i> New Folder</button>
         </div>
 
         <div class='div2'>
-            <button class ="button hvr-pop" id="add-note">Add Note</button>
+          <div class="top-note">
+            <button id="add-note">+</button>
+          </div>
+            <h2>Note1</h2>
             <div id="note-detail">
-              <ul class="add-note-ul">
-              </ul>
               <p id="title"></p>
             </div>
           </div>
 
         <div class="div3" id="note-content">
-          <button id="add-reminder">Set Reminder</button>
-          <!-- The Modal -->
-            <div id="myModal" class="modal">
-
-              <!-- Modal content -->
-              <div id="inner-modal" class="modal-content">
-                <span id="modal-span" class="close">&times;</span>
-                <p>Please Set A Date And Time</p>
-              </div>
-
-            </div>
-
+              <!-- <input type="textarea" id="note-area"> -->
           <textarea id="note-area" wrap="hard"></textarea>
         </div>
 
         <div class="div4" id="topNav">
-          <a id="folders"><i class="fa fa-fw fa-folder"></i> Folders</a>
-          <a id="notes"><i class="fa fa-fw fa-pencil"></i> Notes</a>
-          <a id="content"><i class="fa fa-fw fa-file"></i> Note Content</a>
+          <a id="folders" class="active" href="#"><i class="fa fa-fw fa-folder"></i> Folders</a>
+          <a id="notes" href="#"><i class="fa fa-fw fa-sheet"></i> Notes</a>
+          <a href="#"><i class="fa fa-fw fa-file"></i> Note Content</a>
         </div>
 
     </div>
