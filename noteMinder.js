@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     main()
+    
 })
 
 function main() {
     createNewFolder()
+    addNote();
 }
 
 function createNewFolder() {
@@ -33,5 +35,5 @@ function addNote() {
 
 function showNote(notesSection) {
   const note = document.createElement("div");
-  
+  console.log("hello");
 }
