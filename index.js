@@ -2,24 +2,23 @@ const FOLDERS_URL = "http://localhost:3000/api/v1/folders"
 const NOTES_URL = "http://localhost:3000/api/v1/notes"
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
-    main()
+  main()
 
 })
 
 function main() {
-    createNewFolder()
-    loadFolders();
-    addNote();
-
-    addReminder()
-
+  createNewFolder()
+  loadFolders();
+  addNote();
+  addReminder()
 }
 
 function loadFolders() {
   fetch(FOLDERS_URL)
-  .then(resp => resp.json())
-  .then(json => displayFolders(json))
+    .then(resp => resp.json())
+    .then(json => displayFolders(json))
 }
 
 function displayFolders(folders) {
@@ -36,13 +35,12 @@ function displayFolder(folder) {
 }
 
 function createNewFolder() {
-
-  let newFolder = document.querySelector(".btn")
+  let newFolder = document.getElementById("add-folder-button")
   let ul = document.querySelector(".note-folders")
   let li = document.createElement('li')
 
 
-  newFolder.addEventListener('click', (ev)  => {
+  newFolder.addEventListener('click', (ev) => {
     const nameInput = document.createElement("input");
     nameInput.type = "text";
     ul.appendChild(nameInput);
@@ -51,27 +49,22 @@ function createNewFolder() {
     //addANewFolder('blur', nameInput, ul);
     addANewFolder('keypress', nameInput, ul);
   })
-
 }
 
 function addANewFolder(action, nameInput, ul) {
   let currentName = nameInput.value;
   nameInput.addEventListener(action, (event) => {
     console.log(event.which)
-    if (event.which === 13 || event.which === 0){
+    if (event.which === 13 || event.which === 0) {
       if (nameInput.value === "") {
         //alert("Folder names can't be blank.");
         //if (event.which === 13) {
-
         nameInput.focus();
-
         nameInput.value = currentName;
       } else {
         const li = document.createElement("li");
         li.textContent = nameInput.value;
-
         nameInput.remove();
-
         ul.appendChild(li);
       }
     }
@@ -80,13 +73,10 @@ function addANewFolder(action, nameInput, ul) {
 }
 
 function addNote() {
-
   const addButton = document.getElementById("add-note");
   const notesSection = document.getElementById("note-detail");
   const content = document.querySelector("add-note-ul");
   addButton.addEventListener('click', (event) => {
-    event.preventDefault()
-
     content.focus();
     showNote(notesSection, content);
   })
@@ -116,14 +106,12 @@ function setReminder() {
 
   modal.style.display = "block";
 
-  span.addEventListener('click', () =>{
-      modal.style.display = "none";
+  span.addEventListener('click', () => {
+    modal.style.display = "none";
   })
   window.addEventListener('click', (ev) => {
     if (event.target == modal) {
-         modal.style.display = "none";
-  }
-})
-
+      modal.style.display = "none";
+    }
+  })
 }
-
