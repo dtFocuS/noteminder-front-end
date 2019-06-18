@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function main() {
     createNewFolder()
     addNote();
+    addReminder()
 }
 
 function createNewFolder() {
@@ -35,8 +36,37 @@ function addNote() {
   })
 }
 
-function showNote(notesSection, textArea) {
-  const note = document.createElement("div");
+function showNote(notesSection, content) {
+  // const note = document.createElement("div");
+  const noteStart = document.createElement("span")
+  notesSection.appendChild(noteStart)
+  content.addEventListener('keyup', () => {
+    noteStart.textContent = content.value
+  })
 
   console.log("hello");
+}
+
+function addReminder() {
+  const addReminderBtn = document.getElementById("add-reminder")
+  addReminderBtn.addEventListener('click', () => {
+    setReminder()
+  })
+}
+
+function setReminder() {
+  const modal = document.getElementById("myModal");
+  const span = document.getElementById("modal-span");
+
+  modal.style.display = "block";
+
+  span.addEventListener('click', () =>{
+      modal.style.display = "none";
+  })
+  window.addEventListener('click', (ev) => {
+    if (event.target == modal) {
+         modal.style.display = "none";
+  }
+})
+
 }
