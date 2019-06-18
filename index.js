@@ -34,7 +34,8 @@ function displayFolder(folder) {
 }
 
 function createNewFolder() {
-    let newFolder = document.querySelector(".btn")
+    let newFolder = document.getElementById('add-folder-button')
+    const name = document.createElement("input");
     let ul = document.querySelector(".note-folders")
     let li = document.createElement('li')
 
@@ -76,17 +77,19 @@ function addANewFolder(action, nameInput, ul) {
 }
 
 function addNote() {
-  const addButton = document.querySelector("#add-note");
+  const addButton = document.getElementById("add-note");
   const notesSection = document.getElementById("note-detail");
-  const content = document.querySelector("#note-area");
+  const content = document.querySelector("add-note-ul");
   addButton.addEventListener('click', (event) => {
+    event.preventDefault()
     content.focus();
     showNote(notesSection, content);
   })
 }
 
 function showNote(notesSection, textArea) {
-  const note = document.createElement("div");
+  const note = document.createElement("li");
+  const noteDiv = document.createElement('div')
 
-  console.log("hello");
+  console.log("hello"); 
 }
