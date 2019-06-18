@@ -1,5 +1,7 @@
 const FOLDERS_URL = "http://localhost:3000/api/v1/folders"
 const NOTES_URL = "http://localhost:3000/api/v1/notes"
+let FOLDERCOUNT = 0;
+let ALERT = false;
 
 document.addEventListener("DOMContentLoaded", () => {
     main()
@@ -19,6 +21,7 @@ function loadFolders() {
 }
 
 function displayFolders(folders) {
+  FOLDERCOUNT = folders.length;
   folders.forEach(folder => displayFolder(folder))
 }
 
@@ -32,25 +35,43 @@ function displayFolder(folder) {
 
 function createNewFolder() {
     let newFolder = document.querySelector(".btn")
-    const name = document.createElement("input");
     let ul = document.querySelector(".note-folders")
     let li = document.createElement('li')
-    name.type = "text";
+
 
     newFolder.addEventListener('click', (ev)  => {
-        ul.appendChild(name)
-        name.focus();
-        name.value = "New Folder"
-        addANewFolder(name)
+        const nameInput = document.createElement("input");
+        nameInput.type = "text";
+        ul.appendChild(nameInput);
+        nameInput.focus();
+        nameInput.value = "New Folder " + (FOLDERCOUNT + 1);
+        //addANewFolder('blur', nameInput, ul);
+        addANewFolder('keypress', nameInput, ul);
     })
 }
 
-function addANewFolder(name) {
+function addANewFolder(action, nameInput, ul) {
+  let currentName = nameInput.value;
+  nameInput.addEventListener(action, (event) => {
+    console.log(event.which)
+    if (event.which === 13 || event.which === 0){
+      if (nameInput.value === "") {
+        //alert("Folder names can't be blank.");
+        //if (event.which === 13) {
+          nameInput.focus();
+        //}
+        nameInput.value = currentName;
+      } else {
+        const li = document.createElement("li");
+        li.textContent = nameInput.value;
+        //if (nameInput !== null) {
+        nameInput.remove();
+        //}
 
-
-
-    //li.textContent = "Folder 2"
-    //li.setAttribute("href", "#")
+        ul.appendChild(li);
+      }
+    }
+  })
 
 }
 
