@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>NoteMinder</title>
+    <link rel="shortcut icon" href="img/Note-48.png" />
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -24,16 +25,21 @@
             <div id="note-detail">
               <p id="title"></p>
             </div>
-
-        </div>
+          </div>
 
         <div class="div3" id="note-content">
               <!-- <input type="textarea" id="note-area"> -->
           <textarea id="note-area" wrap="hard"></textarea>
         </div>
+
+        <div class="div4" id="topNav">
+          <a id="folders" class="active" href="#"><i class="fa fa-fw fa-folder"></i> Folders</a>
+          <a id="notes" href="#"><i class="fa fa-fw fa-sheet"></i> Notes</a>
+          <a href="#"><i class="fa fa-fw fa-file"></i> Note Content</a>
+        </div>
+
     </div>
     <script src="index.js"></script>
 
 </body>
-
 </html>

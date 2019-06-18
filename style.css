@@ -4,11 +4,11 @@
 
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.325fr 1fr 1fr 1fr 1fr 1fr;
 
     grid-column-gap: 0px;
 
-    grid-row-gap: 0px;
+    grid-row-gap: 5px;
 
     height: 100%;
 }
@@ -17,10 +17,10 @@
     grid-area: 2 / 1 / 7 / 2;
     height: 100%; /* Full-height: remove this if you want "auto" height */
     width: 245px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    position: relative;
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
-    left: 0;
+    left: 0px;
     background-color: blue; /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
@@ -74,29 +74,22 @@
   overflow: scroll;
 }
 
-.div3 { grid-area: 2 / 3 / 7 / 6;
-height: auto;
-word-wrap: normal;
-
-border:1px solid black;
-background-color: lightgrey;}
-
-.div4 { grid-area: 1 / 2 / 2 / 6; }
-
-/* #note-content h2{
-    text-shadow: 2px 2px blue;
-    border: blue;
-    text-align: center;
-    color: blue;
-    font-family:"Impact";
-} */
-
-/* input[type="textarea"] {
-  word-wrap: inherit;
-  outline: none;
+.div2 #top-note {
+  background: #eee;
   width: 100%;
-  height: 50px;
-} */
+}
+
+.div3 { grid-area: 2 / 3 / 7 / 6;
+  height: auto;
+  word-wrap: normal;
+  border:1px solid black;
+  background-color: lightgrey;
+  /* text-shadow: 2px 2px blue; */
+  border: blue;
+  text-align: center;
+  color: blue;
+  /* font-family:"Impact"; */
+}
 
 .div3 textarea {
   outline: none;
@@ -107,7 +100,39 @@ background-color: lightgrey;}
   font-size: 18px;
 }
 
-.top-note {
-  background: #eee;
+
+.div4 { 
+  grid-area: 1 / 1 / 2 / 6; 
   width: 100%;
+  background-color: #555;
+  overflow: auto;
+}
+
+/* Navbar links */
+.div4 a {
+  float: left;
+  text-align: center;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.div4 #folders{
+  padding-right: 156px;
+}
+
+.div4 #notes {
+  padding-right: 247px;
+  background-color: #4CAF50;
+}
+
+/* Navbar links on mouse-over */
+.div4 a:hover {
+  background-color: #000;
+}
+
+/* Current/active navbar link */
+.active {
+  background-color: #4CAF50;
 }
