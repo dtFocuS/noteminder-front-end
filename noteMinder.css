@@ -9,14 +9,25 @@
     grid-column-gap: 0px;
 
     grid-row-gap: 0px;
-    
+
 }
 
 .div1 { grid-area: 2 / 1 / 7 / 2; }
 
 .div2 { grid-area: 2 / 2 / 7 / 3; }
 
-.div3 { grid-area: 2 / 3 / 7 / 6; }
+.div3 { grid-area: 2 / 3 / 7 / 6;
+height: auto;
+min-height: 100%;
+border:1px solid black;
+background-color: lightgrey;}
+
+#note-content h2{
+    /* text-shadow: 2px 2px blue; */
+    boarder: blue;
+    text-align: center;
+    color: blue;
+    /* font-family:"Impact"; */
+}
 
 .div4 { grid-area: 1 / 1 / 2 / 6; }
-
