@@ -38,6 +38,5 @@ function addNote() {
 function showNote(notesSection, textArea) {
   const note = document.createElement("div");
 
-
   console.log("hello");
 }
