@@ -77,7 +77,7 @@ background-color: lightgrey;}
 
 #note-content h2{
     /* text-shadow: 2px 2px blue; */
-    boarder: blue;
+    border: blue;
     text-align: center;
     color: blue;
     /* font-family:"Impact"; */
