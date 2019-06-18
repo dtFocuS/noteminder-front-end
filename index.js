@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     main()
-    
+
 })
 
 function main() {
@@ -28,12 +28,16 @@ function addANewFolder() {
 function addNote() {
   const addButton = document.querySelector("#add-note");
   const notesSection = document.getElementById("note-detail");
+  const content = document.querySelector("#note-area");
   addButton.addEventListener('click', (event) => {
-    showNote(notesSection);
+    content.focus();
+    showNote(notesSection, content);
   })
 }
 
-function showNote(notesSection) {
+function showNote(notesSection, textArea) {
   const note = document.createElement("div");
+
+
   console.log("hello");
 }
