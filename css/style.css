@@ -1,0 +1,190 @@
+.parent {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+    grid-template-rows: 0.325fr 1fr 1fr 1fr 1fr 1fr;
+
+    grid-column-gap: 0px;
+
+    grid-row-gap: 5px;
+
+    height: 100%;
+}
+
+.div1 {
+    grid-area: 2 / 1 / 7 / 2;
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 245px;
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0px;
+    background-color: gray;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+/* The navigation menu links */
+.div1 li {
+  padding: 6px 8px 6px 70px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+}
+
+.div1 ul {
+    margin: 0;
+    padding: 0;
+}
+
+.div1 li:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.div1 button {
+    background-color: gray;
+    border: none; /* Remove borders */
+    outline: none;
+    color: white; /* White text */
+    padding: 12px 16px; /* Some padding */
+    font-size: 12px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Bounce In for Button */
+.hvr-bounce-in {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+.hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+  -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+  transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+
+/* Style page content */
+.main {
+  margin-left: 160px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+.hvr-bounce-in {
+    margin-left: 45px;
+    position:absolute;
+    bottom: 40px;
+}
+
+.div2 {
+  grid-area: 2 / 2 / 7 / 3;
+  overflow: scroll;
+}
+
+.div2 button {
+    background-color: white;
+    border: none; /* Remove borders */
+    outline: none;
+    color: black; /* White text */
+    padding: 12px 16px; /* Some padding */
+    font-size: 12px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Pop */
+@-webkit-keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+@keyframes hvr-pop {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+.hvr-pop {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-pop:hover, .hvr-pop:focus, .hvr-pop:active {
+  -webkit-animation-name: hvr-pop;
+  animation-name: hvr-pop;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+.hvr-pop {
+    margin-left: 65px;
+    position: absolute;
+    top: 70px;
+}
+
+.div3 { grid-area: 2 / 3 / 7 / 6;
+  height: auto;
+  word-wrap: normal;
+  border:1px solid black;
+  background-color: lightgrey;
+  /* text-shadow: 2px 2px blue; */
+  border: blue;
+  text-align: center;
+  color: blue;
+  /* font-family:"Impact"; */
+}
+
+.div3 textarea {
+  outline: none;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  background-color: inherit;
+  font-size: 18px;
+}
+
+
+.div4 { 
+  grid-area: 1 / 1 / 2 / 6; 
+  width: 100%;
+  background-color: #555;
+}
+
+/* Navbar links */
+.div4 a {
+  float: left;
+  text-align: center;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.div4 #folders{
+  padding-right: 156px;
+  background-color: black;
+}
+
+.div4 #notes {
+  padding-right: 247px;
+  background-color: black;
+}
+
+.div4 #content {
+  padding-right: 724px;
+  background-color: black;
+}
