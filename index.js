@@ -65,11 +65,23 @@ function addANewFolder(action, nameInput, ul) {
         const li = document.createElement("li");
         li.textContent = nameInput.value;
         nameInput.remove();
-        ul.appendChild(li);
+        createFolder(ul, li);
+        //ul.appendChild(li);
       }
     }
   })
+}
 
+function createFolder(ul, li) {
+  fetch(FOLDERS_URL, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({folder: {name: li.textContent, user_id: 1}})
+  })
+  .then(resp => resp.json())
+  .then(json => displayFolder(json))
 }
 
 function addNote() {
