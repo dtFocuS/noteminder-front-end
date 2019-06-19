@@ -20,7 +20,7 @@
 
         <div class='div2'>
           <div class="top-note">
-          </div>        
+          </div>
             <div id="note-detail">
             </div>
           </div>
@@ -32,8 +32,22 @@
 
               <!-- Modal content -->
               <div id="inner-modal" class="modal-content">
+
                 <span id="modal-span" class="close">&times;</span>
-                <p>Please Set A Date And Time</p>
+                <h2>Please Set A Date, Time, and Priority</h2>
+                <form id="modal-form" class="modal-select"  method="post">
+                  <label for="date">Please Select A Date: </label>
+                  <input type="text" name="" value="">
+                  <label for="priority">Priority: </label>
+                  <select id="priority" name="role" class="form-select">
+                    <option selected disabled>Please Select</option>
+                    <option value='1'>High</option>
+                    <option value='2'>Medium</option>
+                    <option value='3'>Low</option>
+                </select><br>
+                <br>
+                <button type="submit" class="btn btn-success" onclick="alert('Your reminder has been set!')" >Set</button>
+                </form>
               </div>
 
             </div>
