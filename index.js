@@ -75,7 +75,8 @@ function addANewFolder(action, nameInput, ul) {
 function addNote() {
   const addButton = document.getElementById("add-note");
   const notesSection = document.getElementById("note-detail");
-  const content = document.querySelector("add-note-ul");
+  const content = document.getElementById("note-area");
+  // const content = document.querySelector("add-note-ul");
   addButton.addEventListener('click', (event) => {
     content.focus();
     showNote(notesSection, content);
