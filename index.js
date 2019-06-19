@@ -1,6 +1,6 @@
 const FOLDERS_URL = "http://localhost:3000/api/v1/folders"
 const NOTES_URL = "http://localhost:3000/api/v1/notes"
-
+let CURRENTNOTE = undefined;
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,7 +12,8 @@ function main() {
   createNewFolder()
   loadFolders();
   addNote();
-  addReminder()
+  addReminder();
+
 }
 
 function loadFolders() {
@@ -45,18 +46,28 @@ function loadNotes(folder) {
 
 function displayNotes(notes, folder) {
   const noteSection = document.getElementById("note-detail");
+  const noteArea = document.getElementById("note-area");
+  let firstNote = true;
   while (noteSection.lastChild) {
     noteSection.removeChild(noteSection.lastChild);
   }
   notes.forEach(note => {
     if (note.folder_id === folder.id) {
+      if (firstNote) {
+        CURRENTNOTE = note;
+        firstNote = false;
+      }
       displayNote(note, noteSection, folder);
     }
   })
+  //child = noteSection.children[0].id.split("-")[1];
+  console.log(CURRENTNOTE);
+  noteArea.value = CURRENTNOTE.content;
 }
 
 function displayNote(note, noteSection, folder) {
   //console.log(note);
+  const noteArea = document.getElementById("note-area");
   const noteCard = document.createElement("div");
   const noteTitle = document.createElement("p");
   const time = document.createElement("span");
@@ -71,23 +82,34 @@ function displayNote(note, noteSection, folder) {
   noteCard.appendChild(folderName);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
-    displayNoteContent(note, noteTitle);
+    CURRENTNOTE = note;
+    //console.log(CURRENTNOTE);
+    noteArea.value = CURRENTNOTE.content;
+    //displayNoteContent(note, noteTitle);
   })
+  UpdateNoteContent();
 }
 
-function displayNoteContent(note, noteTitle) {
+function UpdateNoteContent() {
   const noteArea = document.getElementById("note-area");
-  noteArea.value = note.content;
-  noteArea.focus();
+  const noteSection = document.getElementById("note-detail");
+  const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
+  const noteTitle = curNoteCard.querySelector("p");
+  //console.log(noteTitle);
+  //noteArea.value = note.content;
+  //noteArea.focus();
   noteArea.addEventListener('input', () => {
     if (noteArea.value.length < 27) {
       noteTitle.textContent = noteArea.value;
+    } else if (noteArea.value.length == 27) {
+      noteTitle.textContent = noteTitle.textContent + "...";
     }
-    noteArea.addEventListener('blur', (event) => {
-      
-      updateNote(event, noteArea, note);
-    })
   })
+
+  noteArea.addEventListener('blur', (event) => {
+    updateNote(event, noteArea, CURRENTNOTE);
+  })
+  //CURRENTNOTE = undefined;
 
 }
 
@@ -99,6 +121,8 @@ function updateNote(event, noteArea, note) {
     },
     body: JSON.stringify({note: {content: noteArea.value}})
   })
+  //.then(resp => resp.json())
+  //.then(json => loadNotes())
 
 }
 
