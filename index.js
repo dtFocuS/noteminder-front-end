@@ -80,15 +80,30 @@ function displayNoteContent(note, noteTitle) {
   noteArea.value = note.content;
   noteArea.focus();
   noteArea.addEventListener('input', () => {
-    noteTitle.textContent = noteArea.value;
+    if (noteArea.value.length < 27) {
+      noteTitle.textContent = noteArea.value;
+    }
+    noteArea.addEventListener('blur', (event) => {
+      
+      updateNote(event, noteArea, note);
+    })
   })
-  noteArea.addEventListener('blur', (event) => {
-    updateNote(event, noteArea, note);
-  })
+
 }
 
 function updateNote(event, noteArea, note) {
-  console.log(note);
+  fetch(NOTES_URL + `/${note.id}`, {
+    method: "PATCH",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({note: {content: noteArea.value}})
+  })
+
+}
+
+function newNote(json) {
+
 }
 
 function createNewFolder() {
@@ -157,7 +172,9 @@ function showNote(notesSection, content) {
   const noteStart = document.createElement("span")
   notesSection.appendChild(noteStart)
   content.addEventListener('keyup', () => {
+
     noteStart.textContent = content.value
+    console.log("hello");
   })
 
   console.log("hello");
