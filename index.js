@@ -83,17 +83,26 @@ function displayNote(note, noteSection, folder) {
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
     CURRENTNOTE = note;
-    console.log(CURRENTNOTE);
-    noteArea.value = CURRENTNOTE.content;
+    // console.log(CURRENTNOTE);
+    // noteArea.value = CURRENTNOTE.content;
+    fetchSingleNote(note, noteArea);
     //displayNoteContent(note, noteTitle);
   })
   UpdateNoteContent(folder);
 }
 
+function fetchSingleNote(note, noteArea) {
+  fetch(NOTES_URL + "/" + note.id)
+  .then(resp => resp.json())
+  .then(json => {
+    noteArea.value = json.content;
+  })
+
+}
+
 function UpdateNoteContent(folder) {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
-  let temp = "";
   //console.log(noteTitle);
   //noteArea.value = note.content;
   //noteArea.focus();
@@ -109,8 +118,7 @@ function UpdateNoteContent(folder) {
   noteArea.addEventListener('blur', (event) => {
     updateNote(event, noteArea, CURRENTNOTE, folder);
   })
-  //CURRENTNOTE = undefined;
-  //loadNotes(folder);
+
 }
 
 function updateNote(event, noteArea, note, folder) {
@@ -121,8 +129,8 @@ function updateNote(event, noteArea, note, folder) {
     },
     body: JSON.stringify({note: {content: noteArea.value}})
   })
-  //.then(resp => resp.json())
-  //.then(json => loadNotes(folder))
+  .then(resp => resp.json())
+  .then(json => {})
 
 
 }
