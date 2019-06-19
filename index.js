@@ -61,7 +61,7 @@ function displayNotes(notes, folder) {
     }
   })
   //child = noteSection.children[0].id.split("-")[1];
-  console.log(CURRENTNOTE);
+  //console.log(CURRENTNOTE);
   noteArea.value = CURRENTNOTE.content;
 }
 
@@ -74,7 +74,7 @@ function displayNote(note, noteSection, folder) {
   const folderName = document.createElement("p");
   time.className = "time-created";
   noteCard.id = "note-" + note.id;
-  noteTitle.textContent = note.content;
+  noteTitle.textContent = note.content.substring(0, 27);
   time.textContent = note.created_at;
   folderName.textContent = folder.name;
   noteCard.appendChild(noteTitle);
@@ -83,37 +83,37 @@ function displayNote(note, noteSection, folder) {
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
     CURRENTNOTE = note;
-    //console.log(CURRENTNOTE);
+    console.log(CURRENTNOTE);
     noteArea.value = CURRENTNOTE.content;
     //displayNoteContent(note, noteTitle);
   })
-  UpdateNoteContent();
+  UpdateNoteContent(folder);
 }
 
-function UpdateNoteContent() {
+function UpdateNoteContent(folder) {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
-  const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
-  const noteTitle = curNoteCard.querySelector("p");
+  let temp = "";
   //console.log(noteTitle);
   //noteArea.value = note.content;
   //noteArea.focus();
   noteArea.addEventListener('input', () => {
+    //console.log(CURRENTNOTE);
+    const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
+    const noteTitle = curNoteCard.querySelector("p");
     if (noteArea.value.length < 27) {
       noteTitle.textContent = noteArea.value;
-    } else if (noteArea.value.length == 27) {
-      noteTitle.textContent = noteTitle.textContent + "...";
     }
   })
 
   noteArea.addEventListener('blur', (event) => {
-    updateNote(event, noteArea, CURRENTNOTE);
+    updateNote(event, noteArea, CURRENTNOTE, folder);
   })
   //CURRENTNOTE = undefined;
-
+  //loadNotes(folder);
 }
 
-function updateNote(event, noteArea, note) {
+function updateNote(event, noteArea, note, folder) {
   fetch(NOTES_URL + `/${note.id}`, {
     method: "PATCH",
     headers: {
@@ -122,12 +122,13 @@ function updateNote(event, noteArea, note) {
     body: JSON.stringify({note: {content: noteArea.value}})
   })
   //.then(resp => resp.json())
-  //.then(json => loadNotes())
+  //.then(json => loadNotes(folder))
+
 
 }
 
 function newNote(json) {
-
+  const addNote = document.getElementById("add-note");
 }
 
 function createNewFolder() {
