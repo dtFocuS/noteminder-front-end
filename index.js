@@ -31,7 +31,64 @@ function displayFolder(folder) {
   const listItem = document.createElement("li");
   listItem.id = "folder-" + folder.id;
   listItem.textContent = folder.name;
+  listItem.addEventListener('click', (event) => {
+    loadNotes(folder);
+  })
   folderList.appendChild(listItem);
+}
+
+function loadNotes(folder) {
+  fetch(NOTES_URL)
+  .then(resp => resp.json())
+  .then(json => displayNotes(json, folder))
+}
+
+function displayNotes(notes, folder) {
+  const noteSection = document.getElementById("note-detail");
+  while (noteSection.lastChild) {
+    noteSection.removeChild(noteSection.lastChild);
+  }
+  notes.forEach(note => {
+    if (note.folder_id === folder.id) {
+      displayNote(note, noteSection, folder);
+    }
+  })
+}
+
+function displayNote(note, noteSection, folder) {
+  //console.log(note);
+  const noteCard = document.createElement("div");
+  const noteTitle = document.createElement("p");
+  const time = document.createElement("span");
+  const folderName = document.createElement("p");
+  time.className = "time-created";
+  noteCard.id = "note-" + note.id;
+  noteTitle.textContent = note.content;
+  time.textContent = note.created_at;
+  folderName.textContent = folder.name;
+  noteCard.appendChild(noteTitle);
+  noteCard.appendChild(time);
+  noteCard.appendChild(folderName);
+  noteSection.appendChild(noteCard);
+  noteCard.addEventListener('click', (event) => {
+    displayNoteContent(note, noteTitle);
+  })
+}
+
+function displayNoteContent(note, noteTitle) {
+  const noteArea = document.getElementById("note-area");
+  noteArea.value = note.content;
+  noteArea.focus();
+  noteArea.addEventListener('input', () => {
+    noteTitle.textContent = noteArea.value;
+  })
+  noteArea.addEventListener('blur', (event) => {
+    updateNote(event, noteArea, note);
+  })
+}
+
+function updateNote(event, noteArea, note) {
+  console.log(note);
 }
 
 function createNewFolder() {
