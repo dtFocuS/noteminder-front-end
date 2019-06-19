@@ -8,7 +8,7 @@
 
   grid-column-gap: 0px;
 
-  grid-row-gap: 5px;
+  grid-row-gap: 0px;
 
   height: 100%;
 }
@@ -75,18 +75,18 @@
 .hvr-bounce-in {
     margin-left: 5%;
     position:absolute;
-    bottom: 5%;
+    bottom: 3%;
 }
 
 .div2 {
   grid-area: 2 / 2 / 7 / 3;
-  overflow: scroll;
+  background-color: blanchedalmond;
+  height: 102.75%;
+  width: 100%;
 }
 
-.div2 button {
-  background-color: white;
-  border: none; /* Remove borders */
-  outline: none;
+.div2 a {
+  background-color: ghostwhite;
   color: black; /* White text */
   padding: 12px 16px; /* Some padding */
   font-size: 12px; /* Set a font size */
@@ -94,7 +94,7 @@
 }
 
 /* Pop */
-@-webkit-keyframes hvr-pop {
+/* @-webkit-keyframes hvr-pop {
   50% {
     -webkit-transform: scale(1.2);
     transform: scale(1.2);
@@ -128,7 +128,7 @@
   margin-left: 7%;
   position: absolute;
   bottom: 5%;
-}
+} */
 
 .div3 { 
   grid-area: 2 / 3 / 7 / 6;
@@ -141,11 +141,13 @@
   text-align: center;
   color: blue;
   /* font-family:"Impact"; */
+  width: 100%;
+  height: 100.25%;
 }
 
 .div3 textarea {
   outline: none;
-  box-sizing: border-box;
+  border: none;
   height: 100%;
   width: 100%;
   background-color: inherit;
@@ -156,6 +158,7 @@
   grid-area: 1 / 1 / 2 / 2; 
   width: 100%;
   background-color: #000;
+  height: 100%;
 }
 
 .div4 a {
@@ -170,10 +173,11 @@
 .div5 {
   grid-area: 1 / 2 / 2 / 3;
   width: 100%;
+  height: 100%;
   background-color: #000;
 }
 
-.div5 a { 
+.div5 #notes { 
   float: left;
   text-align: center;
   padding: 25px;
@@ -182,9 +186,18 @@
   font-size: 17px;
 }
 
+.div5 #add-note {
+  float: right;
+  margin-right: 10%;
+  margin-top: 9%;
+  color: white;
+  cursor: pointer;
+}
+
 .div6 { 
   grid-area: 1 / 3 / 2 / 6;
   width: 100%;
+  height: 100%;
   background-color: #000;
 }
 
