@@ -1,28 +1,28 @@
 .parent {
 
-    display: grid;
+  display: grid;
 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
-    grid-template-rows: 0.325fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.325fr 1fr 1fr 1fr 1fr 1fr;
 
-    grid-column-gap: 0px;
+  grid-column-gap: 0px;
 
-    grid-row-gap: 5px;
+  grid-row-gap: 5px;
 
-    height: 100%;
+  height: 100%;
 }
 
 .div1 {
-    grid-area: 2 / 1 / 7 / 2;
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 245px;
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0px;
-    background-color: gray;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
+  grid-area: 2 / 1 / 7 / 2;
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 100%;
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0px;
+  background-color: gray;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
 }
 
 /* The navigation menu links */
@@ -32,6 +32,7 @@
   font-size: 25px;
   color: white;
   display: block;
+  margin-left: 12%;
 }
 
 .div1 ul {
@@ -45,13 +46,13 @@
 }
 
 .div1 button {
-    background-color: gray;
-    border: none; /* Remove borders */
-    outline: none;
-    color: white; /* White text */
-    padding: 12px 16px; /* Some padding */
-    font-size: 12px; /* Set a font size */
-    cursor: pointer; /* Mouse pointer on hover */
+  background-color: gray;
+  border: none; /* Remove borders */
+  outline: none;
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 12px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
 }
 
 /* Bounce In for Button */
@@ -71,17 +72,10 @@
   transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
 }
 
-
-/* Style page content */
-.main {
-  margin-left: 160px; /* Same as the width of the sidebar */
-  padding: 0px 10px;
-}
-
 .hvr-bounce-in {
-    margin-left: 45px;
+    margin-left: 5%;
     position:absolute;
-    bottom: 40px;
+    bottom: 5%;
 }
 
 .div2 {
@@ -90,13 +84,13 @@
 }
 
 .div2 button {
-    background-color: white;
-    border: none; /* Remove borders */
-    outline: none;
-    color: black; /* White text */
-    padding: 12px 16px; /* Some padding */
-    font-size: 12px; /* Set a font size */
-    cursor: pointer; /* Mouse pointer on hover */
+  background-color: white;
+  border: none; /* Remove borders */
+  outline: none;
+  color: black; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 12px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
 }
 
 /* Pop */
@@ -131,12 +125,13 @@
 }
 
 .hvr-pop {
-    margin-left: 65px;
-    position: absolute;
-    top: 70px;
+  margin-left: 7%;
+  position: absolute;
+  top: 10%;
 }
 
-.div3 { grid-area: 2 / 3 / 7 / 6;
+.div3 { 
+  grid-area: 2 / 3 / 7 / 6;
   height: auto;
   word-wrap: normal;
   border:1px solid black;
@@ -157,36 +152,49 @@
   font-size: 18px;
 }
 
-
 .div4 { 
-  grid-area: 1 / 1 / 2 / 6; 
+  grid-area: 1 / 1 / 2 / 2; 
   width: 100%;
-  background-color: #555;
+  background-color: #000;
 }
 
-/* Navbar links */
 .div4 a {
   float: left;
   text-align: center;
-  padding: 12px;
+  padding: 25px;
   color: white;
   text-decoration: none;
   font-size: 17px;
 }
 
-.div4 #folders{
-  padding-right: 156px;
-  background-color: black;
+.div5 {
+  grid-area: 1 / 2 / 2 / 3;
+  width: 100%;
+  background-color: #000;
 }
 
-.div4 #notes {
-  padding-right: 247px;
-  background-color: black;
+.div5 a { 
+  float: left;
+  text-align: center;
+  padding: 25px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
 }
 
-.div4 #content {
-  padding-right: 724px;
-  background-color: black;
+.div6 { 
+  grid-area: 1 / 3 / 2 / 6;
+  width: 100%;
+  background-color: #000;
+}
+
+.div6 a {
+  float: left;
+  text-align: center;
+  padding: 25px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
 }
 
 /* The Modal (background) */
@@ -221,8 +229,7 @@
   font-weight: bold;
 }
 
- .close:hover,
-.close:focus {
+ .close:hover, .close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
