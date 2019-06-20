@@ -92,7 +92,6 @@ function displayNote(note, noteSection, folder) {
   noteCard.appendChild(noteTitle);
   noteCard.appendChild(timeSpan);
   noteCard.appendChild(folderName);
-  noteCard.appendChild(deleteNote);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
     CURRENTNOTE = note;
