@@ -3,7 +3,9 @@ const NOTES_URL = "http://localhost:3000/api/v1/notes"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
-let EMPTYNOTE = undefined;
+let date = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
+let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
+let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
 
 document.addEventListener("DOMContentLoaded", () => {
   main()
@@ -85,7 +87,7 @@ function displayNote(note, noteSection, folder) {
   time.className = "time-created";
   noteCard.id = "note-" + note.id;
   noteTitle.textContent = note.content.substring(0, 27);
-  time.textContent = note.created_at;
+  time.textContent = note.time;
   folderName.textContent = folder.name;
   noteCard.appendChild(noteTitle);
   noteCard.appendChild(time);
@@ -95,6 +97,7 @@ function displayNote(note, noteSection, folder) {
     CURRENTNOTE = note;
     // console.log(CURRENTNOTE);
     // noteArea.value = CURRENTNOTE.content;
+    NEWNOTE = false;
     fetchSingleNote(note, noteArea);
     //displayNoteContent(note, noteTitle);
   })
@@ -113,10 +116,6 @@ function fetchSingleNote(note, noteArea) {
 function UpdateNoteContent(folder) {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
-  //console.log(noteTitle);
-  //noteArea.value = note.content;
-  //noteArea.focus();
-
   noteArea.addEventListener('input', () => {
     if (NEWNOTE === false) {
       const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
@@ -132,11 +131,7 @@ function UpdateNoteContent(folder) {
     if (NEWNOTE === false) {
       updateNote(event, noteArea, CURRENTNOTE, folder);
     }
-
   })
-
-
-
 }
 
 function updateNote(event, noteArea, note, folder) {
@@ -145,12 +140,10 @@ function updateNote(event, noteArea, note, folder) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({note: {content: noteArea.value}})
+    body: JSON.stringify({note: {content: noteArea.value, time: currentTime}})
   })
   .then(resp => resp.json())
   .then(json => {})
-
-
 }
 
 
@@ -159,8 +152,6 @@ function createNewFolder() {
   let newFolder = document.getElementById("add-folder-button")
   let ul = document.querySelector(".note-folders")
   let li = document.createElement('li')
-
-
   newFolder.addEventListener('click', (ev) => {
     const nameInput = document.createElement("input");
     nameInput.type = "text";
@@ -224,14 +215,17 @@ function addNote() {
 function buildNote() {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
-  let newCard = document.createElement("div");
+  const newCard = document.createElement("div");
   const newContent = document.createElement("p");
-  const time = document.createElement("span");
+  const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
-  time.className = "time-created";
+
+  console.log(currentTime);
+  timeLabel.className = "time-created";
   //newCard.id = "note-" + note.id;
   newContent.textContent = "New Note";
-  time.textContent = `${new Date().getHours()}:${new Date().getMinutes()}`;
+  timeLabel.textContent = time;
+  //`${new Date().getHours()}:${new Date().getMinutes()}`;
   if (CURRENTFOLDER) {
     folderName.textContent = `${CURRENTFOLDER.name}`;
   } else {
@@ -239,7 +233,7 @@ function buildNote() {
   }
   //folderName.textContent = `${CURRENTNOTE.folder.name}`;
   newCard.appendChild(newContent);
-  newCard.appendChild(time);
+  newCard.appendChild(timeLabel);
   newCard.appendChild(folderName);
   if (noteSection.lastChild) {
     noteSection.insertBefore(newCard, noteSection.childNodes[0]);
@@ -254,7 +248,7 @@ function buildNote() {
 
 function postNote(noteArea, noteSection, newCard) {
 
-  console.log(CURRENTNOTE);
+  //console.log(CURRENTNOTE);
   noteArea.addEventListener('input', () => {
     //const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
     if (NEWNOTE === true) {
@@ -274,15 +268,11 @@ function postNote(noteArea, noteSection, newCard) {
           folderId = CURRENTFOLDER.id;
         }
         createNote(event, noteArea, folderId, newCard);
-        //noteSection.children[0].remove();
       } else {
-        console.log(noteSection.children[0]);
-        //newCard.remove();
         noteSection.children[0].remove();
         NEWNOTE = false;
         console.log(NEWNOTE);
       }
-
     }
     noteArea.removeEventListener('blur', a);
   })
@@ -294,7 +284,7 @@ function createNote(event, noteArea, folderId, newCard) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({note: {content: noteArea.value, folder_id: folderId}})
+    body: JSON.stringify({note: {content: noteArea.value, time: currentTime, folder_id: folderId}})
   })
   .then(resp => resp.json())
   .then(note => {
