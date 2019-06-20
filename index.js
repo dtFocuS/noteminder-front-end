@@ -3,6 +3,7 @@ const NOTES_URL = "http://localhost:3000/api/v1/notes"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
+let CURRENTTITLE = undefined;
 let date = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
 let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
 let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
@@ -306,6 +307,7 @@ function buildNote() {
   const newContent = document.createElement("p");
   const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
+  CURRENTTITLE = newContent;
   folderName.className = "og-folder";
   console.log(currentTime);
   timeLabel.className = "time-created";
@@ -341,7 +343,7 @@ function postNote(noteArea, noteSection, newCard) {
     if (NEWNOTE === true) {
       const noteTitle = newCard.querySelector("p");
       if (noteArea.value.length < 27) {
-        noteTitle.textContent = noteArea.value;
+        CURRENTTITLE.textContent = noteArea.value;
       }
     }
   })
