@@ -28,6 +28,7 @@
 /* The navigation menu links */
 .div1 li {
   /* padding: 6px 8px 6px 70px; */
+  /* user-select: all; */
   text-decoration: none;
   text-align: center;
   font-size: 25px;
@@ -72,6 +73,12 @@
   width: 100%;
 }
 
+/* .div1 li::selection {
+  user-select: all;
+  background-color: red;
+  width: auto;
+} */
+
 /* Bounce In for Button */
 .hvr-bounce-in {
   display: inline-block;
@@ -110,9 +117,8 @@
   cursor: pointer; /* Mouse pointer on hover */
 }
 
-#note-detail span:after {
-  /* border: 1px solid black;
-  border-bottom: 1px solid black; */
+#note-area span.time-created p:after {
+  border-bottom: 1px solid black;
   content: ""; /* This is necessary for the pseudo element to work. */
   display: block; /* This will put the pseudo element on its own line. */
   margin: 0 auto; /* This will center the border. */
@@ -164,19 +170,17 @@
   word-wrap: normal;
   border:1px solid black;
   background-color: lightgrey;
-  /* text-shadow: 2px 2px blue; */
   border: blue;
   text-align: center;
-  color: blue;
-  /* font-family:"Impact"; */
   width: 100%;
-  height: 100.25%;
+  height: 100%;
 }
 
 .div3 textarea {
+  padding: 4%;
   outline: none;
   border: none;
-  height: 100%;
+  height: 100.25%;
   width: 100%;
   background-color: inherit;
   font-size: 18px;
@@ -215,6 +219,14 @@
 }
 
 .div5 #add-note {
+  float: right;
+  margin-right: 10%;
+  margin-top: 9%;
+  color: white;
+  cursor: pointer;
+}
+
+.div5 #remove-note {
   float: right;
   margin-right: 10%;
   margin-top: 9%;

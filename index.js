@@ -3,7 +3,10 @@ const NOTES_URL = "http://localhost:3000/api/v1/notes"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
-
+let date = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
+let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
+let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
+const timeAbove = document.getElementById("date-span");
 
 document.addEventListener("DOMContentLoaded", () => {
   main()
@@ -15,6 +18,7 @@ function main() {
   loadFolders();
   addNote();
   openModal();
+  deleteNote();
 }
 
 function loadFolders() {
@@ -49,24 +53,37 @@ function loadNotes(folder) {
 function displayNotes(notes, folder) {
   const noteSection = document.getElementById("note-detail");
   const noteArea = document.getElementById("note-area");
+  let count = 0;
   let firstNote = true;
   while (noteSection.lastChild) {
     noteSection.removeChild(noteSection.lastChild);
   }
-  notes.forEach(note => {
-    if (note.folder_id === folder.id) {
+  //console.log(notes.length);
+
+  for (let i = notes.length - 1; i >= 0; i--) {
+    if (notes[i].folder_id === folder.id) {
       if (firstNote) {
-        CURRENTNOTE = note;
+        CURRENTNOTE = notes[i];
         firstNote = false;
       }
-      displayNote(note, noteSection, folder);
+      count++;
+      displayNote(notes[i], noteSection, folder);
     }
-  })
-  //child = noteSection.children[0].id.split("-")[1];
-  console.log(CURRENTNOTE);
-  if (notes.length === 0) {
+  }
+  // notes.forEach(note => {
+  //   if (note.folder_id === folder.id) {
+  //     if (firstNote) {
+  //       CURRENTNOTE = note;
+  //       firstNote = false;
+  //     }
+  //     count++;
+  //     displayNote(note, noteSection, folder);
+  //   }
+  // })
+  if (count === 0) {
     CURRENTNOTE = undefined;
-    noteArea.placeholder = "";
+    noteArea.value = "";
+    timeAbove.textContent = "";
   } else {
     noteArea.value = CURRENTNOTE.content;
   }
@@ -78,51 +95,106 @@ function displayNote(note, noteSection, folder) {
   const noteArea = document.getElementById("note-area");
   const noteCard = document.createElement("div");
   const noteTitle = document.createElement("p");
-  const time = document.createElement("span");
+  const timeSpan = document.createElement("span");
   const folderName = document.createElement("p");
-  time.className = "time-created";
+
+  folderName.id = "folder-note-" + note.id;
+  timeSpan.className = "time-created";
   noteCard.id = "note-" + note.id;
   noteTitle.textContent = note.content.substring(0, 27);
-  time.textContent = note.created_at;
+  timeSpan.textContent = note.time;
+  timeAbove.textContent = CURRENTNOTE.time;
   folderName.textContent = folder.name;
   noteCard.appendChild(noteTitle);
-  noteCard.appendChild(time);
+  noteCard.appendChild(timeSpan);
   noteCard.appendChild(folderName);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
     CURRENTNOTE = note;
-    // console.log(CURRENTNOTE);
-    // noteArea.value = CURRENTNOTE.content;
+    NEWNOTE = false;
+    timeAbove.textContent = CURRENTNOTE.time;
     fetchSingleNote(note, noteArea);
-    //displayNoteContent(note, noteTitle);
   })
-  UpdateNoteContent(folder);
+
+  UpdateNoteContent(folder, note);
+}
+
+function deleteNote() {
+  const deleteNoteButton = document.getElementById("remove-note");
+
+  // if (CURRENTNOTE !== undefined) {
+  //   deleteNoteButton.addEventListener('click', (event) => {
+  //     console.log("hey");
+  //     removeNote(CURRENTNOTE)
+  //   })
+  // }
+  deleteNoteButton.addEventListener('click', (event) => {
+      if (CURRENTNOTE) {
+        const noteSection = document.getElementById("note-detail");
+
+        const noteArea = document.getElementById("note-area");
+
+        removeNote(CURRENTNOTE, noteSection);
+        console.log(CURRENTNOTE);
+        const notes = noteSection.querySelectorAll('div');
+        if (notes.length > 0) {
+          //console.log(notes[0].id.split("-")[1]);
+          console.log(notes);
+          fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
+
+          timeAbove.textContent = CURRENTNOTE.time;
+          //noteArea.value = CURRENTNOTE.content;
+        } else {
+          CURRENTNOTE = undefined;
+          timeAbove.textContent = "";
+          noteArea.value = "";
+        }
+      }
+
+  })
+
+}
+
+function removeNote(note, noteSection) {
+  const noteCard = document.querySelector(`div#note-${note.id}`);
+  fetch(NOTES_URL + `/${note.id}`, {
+    method: 'DELETE'
+  })
+  .then(resp => resp.json())
+  .then(json => {
+    noteCard.remove()
+  })
 }
 
 function fetchSingleNote(note, noteArea) {
   fetch(NOTES_URL + "/" + note.id)
   .then(resp => resp.json())
   .then(json => {
-    noteArea.value = json.content;
+    CURRENTNOTE = json
+    noteArea.value = json.content
+
   })
 
 }
 
-function UpdateNoteContent(folder) {
+function UpdateNoteContent(folder, note) {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
-  //console.log(noteTitle);
-  //noteArea.value = note.content;
-  //noteArea.focus();
-
   noteArea.addEventListener('input', () => {
-    //console.log(CURRENTNOTE);
+    let curTime = time;
     if (NEWNOTE === false) {
+
       const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
       const noteTitle = curNoteCard.querySelector("p");
+      const noteTime = curNoteCard.querySelector("span");
       if (noteArea.value.length < 27) {
         noteTitle.textContent = noteArea.value;
+        //noteTime.textContent = curTime;
       }
+      if (noteArea.value != note.content) {
+        noteTime.textContent = curTime;
+      }
+
     }
 
   })
@@ -131,11 +203,7 @@ function UpdateNoteContent(folder) {
     if (NEWNOTE === false) {
       updateNote(event, noteArea, CURRENTNOTE, folder);
     }
-
   })
-
-
-
 }
 
 function updateNote(event, noteArea, note, folder) {
@@ -144,12 +212,10 @@ function updateNote(event, noteArea, note, folder) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({note: {content: noteArea.value}})
+    body: JSON.stringify({note: {content: noteArea.value, time: currentTime}})
   })
   .then(resp => resp.json())
   .then(json => {})
-
-
 }
 
 
@@ -158,8 +224,6 @@ function createNewFolder() {
   let newFolder = document.getElementById("add-folder-button")
   let ul = document.querySelector(".note-folders")
   let li = document.createElement('li')
-
-
   newFolder.addEventListener('click', (ev) => {
     const nameInput = document.createElement("input");
     nameInput.type = "text";
@@ -210,13 +274,12 @@ function addNote() {
   //const notesSection = document.getElementById("note-detail");
   const content = document.getElementById("note-area");
   // const content = document.querySelector("add-note-ul");
-  addButton.addEventListener('click', () => {
-    // let folderId = null;
-    // if (CURRENTNOTE) {
-    //   folderId = CURRENTNOTE.folder_id;
-    // }
+  addButton.addEventListener('click', (event) => {
+
     CURRENTNOTE = undefined;
     NEWNOTE = true;
+    console.log(NEWNOTE);
+    //addButton.style.pointerEvents = "none";
     buildNote();
   })
 }
@@ -226,12 +289,15 @@ function buildNote() {
   const noteSection = document.getElementById("note-detail");
   const newCard = document.createElement("div");
   const newContent = document.createElement("p");
-  const time = document.createElement("span");
+  const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
-  time.className = "time-created";
+  folderName.className = "og-folder";
+  console.log(currentTime);
+  timeLabel.className = "time-created";
   //newCard.id = "note-" + note.id;
   newContent.textContent = "New Note";
-  time.textContent = `${new Date().getHours()}:${new Date().getMinutes()}`;
+  timeLabel.textContent = time;
+  //`${new Date().getHours()}:${new Date().getMinutes()}`;
   if (CURRENTFOLDER) {
     folderName.textContent = `${CURRENTFOLDER.name}`;
   } else {
@@ -239,7 +305,7 @@ function buildNote() {
   }
   //folderName.textContent = `${CURRENTNOTE.folder.name}`;
   newCard.appendChild(newContent);
-  newCard.appendChild(time);
+  newCard.appendChild(timeLabel);
   newCard.appendChild(folderName);
   if (noteSection.lastChild) {
     noteSection.insertBefore(newCard, noteSection.childNodes[0]);
@@ -248,14 +314,14 @@ function buildNote() {
   }
   noteArea.value = "";
   noteArea.focus();
-  postNote(noteArea, newCard);
+  postNote(noteArea, noteSection, newCard);
 
 }
 
-function postNote(noteArea, newCard) {
+function postNote(noteArea, noteSection, newCard) {
 
-  console.log(CURRENTNOTE);
-  noteArea.addEventListener('input', () => {
+  //console.log(CURRENTNOTE);
+  noteArea.addEventListener('input', (event) => {
     //const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
     if (NEWNOTE === true) {
       const noteTitle = newCard.querySelector("p");
@@ -263,37 +329,43 @@ function postNote(noteArea, newCard) {
         noteTitle.textContent = noteArea.value;
       }
     }
-
   })
 
-  noteArea.addEventListener('blur', (event) => {
+  noteArea.addEventListener('blur', function a(event) {
     if (NEWNOTE === true) {
       let folderId = null;
       if (noteArea.value !== "" && noteArea.value != null) {
         if (CURRENTFOLDER) {
           folderId = CURRENTFOLDER.id;
         }
-        createNote(event, noteArea, folderId);
+        createNote(event, noteArea, folderId, newCard);
       } else {
-        newCard.remove();
+        noteSection.children[0].remove();
         NEWNOTE = false;
+        console.log(NEWNOTE);
       }
     }
-
+    noteArea.removeEventListener('blur', a);
   })
 }
 
-function createNote(event, noteArea, folderId) {
+function createNote(event, noteArea, folderId, newCard) {
   fetch(NOTES_URL, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({note: {content: noteArea.value, folder_id: folderId}})
+    body: JSON.stringify({note: {content: noteArea.value, time: currentTime, folder_id: folderId}})
   })
   .then(resp => resp.json())
-  .then(json => {
-    NEWNOTE = false;
+  .then(note => {
+    CURRENTNOTE = note
+    newCard.addEventListener('click', (event) => {
+
+      newCard.id = "note-" + note.id
+      //console.log(newCard.id);
+      fetchSingleNote(note, noteArea)
+    })
   })
 }
 
@@ -427,4 +499,4 @@ function setReminder(ev) {
 function addZero(i) {
   if (i < 10) { i = "0" + i };
   return i;
-} 
+}
