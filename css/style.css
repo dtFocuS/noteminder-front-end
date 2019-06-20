@@ -110,7 +110,7 @@
   cursor: pointer; /* Mouse pointer on hover */
 }
 
-#note-detail::after {
+#note-area span.time-created p::after {
   border-bottom: 1px solid black;
   content: ""; /* This is necessary for the pseudo element to work. */
   display: block; /* This will put the pseudo element on its own line. */
@@ -165,13 +165,12 @@
   background-color: lightgrey;
   border: blue;
   text-align: center;
-  color: blue;
   width: 100%;
   height: 100.25%;
 }
 
 .div3 textarea {
-  padding: 8%;
+  padding: 4%;
   outline: none;
   border: none;
   height: 100%;
@@ -213,6 +212,14 @@
 }
 
 .div5 #add-note {
+  float: right;
+  margin-right: 10%;
+  margin-top: 9%;
+  color: white;
+  cursor: pointer;
+}
+
+.div5 #remove-note {
   float: right;
   margin-right: 10%;
   margin-top: 9%;
