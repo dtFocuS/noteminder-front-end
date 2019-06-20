@@ -7,7 +7,7 @@ let NEWNOTE = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   main()
-
+  setInterval(interval(), 1000)
 })
 
 function main() {
@@ -311,23 +311,35 @@ function showModal() {
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-span");
   let form = document.getElementById('modal-form')
+  let clearButton = document.getElementById('clear-modal')
 
   modal.style.display = "block";
+
+  clearButton.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    clearModal();
+  })
 
   span.addEventListener('click', () => {
     modal.style.display = "none";
   })
-  window.addEventListener('click', (ev) => {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  })
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    setReminder(ev);
-    // buildAudio()
+    Myinterval = setInterval(setReminder, 1000, ev)
   })
+}
+
+function clearModal() {
+  let audio = document.getElementById('audio');
+
+  clearInterval(Myinterval);
+
+  document.getElementById('dateSelection').disabled = false;
+  document.getElementById('priority').disabled = false;
+  document.getElementById('alarmHrs').disabled = false;
+  document.getElementById('alarmMins').disabled = false;
+  audio.pause();
 }
 
 function startTime() {
@@ -336,7 +348,6 @@ function startTime() {
   let minute = today.getMinutes();
   let time = checkZero(hour) + ":" + checkZero(minute)
   document.getElementById("current_time").innerHTML = time;
-
   let t = setTimeout(startTime, 500)
 }
 
@@ -365,23 +376,17 @@ function minutesMenu(minute) {
   }
 }
 
-// function buildAudio() {
-//   let priority = document.getElementById('priority')
-//   let myAudio = document.createElement
-
-//   myAudio.src = "https://www.freespecialeffects.co.uk/pages/various.html";
-//   myAudio.id = "myAudio"
-//   priority.appendChild(myAudio)
-// }
-
 function setReminder(ev) {
   console.log(ev)
+
+  const modal = document.getElementById("myModal");
 
   let date = document.getElementById("dateSelection");
   let hour = document.getElementById("alarmHrs");
   let minute = document.getElementById("alarmMins");
 
   let selectedDate = ev.target.elements.dateSelection.value;
+  console.log(selectedDate)
   let selectedHour = ev.target.elements.alarmHrs.value;
   let selectedMinute = ev.target.elements.alarmMins.value;
   let selectedPriority = ev.target.elements.priority.value;
@@ -389,9 +394,34 @@ function setReminder(ev) {
   let alarmTime = selectedHour + ":" + addZero(selectedMinute);
   console.log(alarmTime)
 
-  // document.getElementById('alarmHrs').disabled = true;
-  // document.getElementById('alarmMins').disabled = true;
-  // span.disabled = true;
+  document.getElementById('alarmHrs').disabled = true;
+  document.getElementById('alarmMins').disabled = true;
+  document.getElementById('priority').disabled = true;
+  document.getElementById('dateSelection').disabled = true;
+
+  let currentDate = new Date();
+  let currentYear = currentDate.getFullYear();
+  let currentMonth = currentDate.getMonth();
+  let currentDay = currentDate.getDate();
+
+  let currentActualDate = currentYear + "-" + "0" + (currentMonth + 1) + "-" + currentDay
+  console.log(currentActualDate)
+
+  let currentHour = currentDate.getHours();
+  let currentMinute = currentDate.getMinutes();
+
+  let actualTime = currentHour + ":" + addZero(currentMinute);
+  console.log(actualTime)
+
+  let audio = document.getElementById('audio');
+
+  if(actualTime === alarmTime && currentActualDate === selectedDate) {
+    audio.play();
+    window.alert("ALARM!!!!!!!");
+    clearInterval(Myinterval);
+    clearModal();
+    modal.style.display = "none";
+  }
 }
 
 function addZero(i) {
