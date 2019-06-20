@@ -121,13 +121,6 @@ function displayNote(note, noteSection, folder) {
 
 function deleteNote() {
   const deleteNoteButton = document.getElementById("remove-note");
-
-  // if (CURRENTNOTE !== undefined) {
-  //   deleteNoteButton.addEventListener('click', (event) => {
-  //     console.log("hey");
-  //     removeNote(CURRENTNOTE)
-  //   })
-  // }
   deleteNoteButton.addEventListener('click', (event) => {
       if (CURRENTNOTE) {
         const noteSection = document.getElementById("note-detail");
@@ -360,9 +353,8 @@ function createNote(event, noteArea, folderId, newCard) {
   .then(resp => resp.json())
   .then(note => {
     CURRENTNOTE = note
+    newCard.id = "note-" + note.id
     newCard.addEventListener('click', (event) => {
-
-      newCard.id = "note-" + note.id
       //console.log(newCard.id);
       fetchSingleNote(note, noteArea)
     })
