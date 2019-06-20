@@ -29,29 +29,32 @@
           <button id="add-reminder">Set Reminder</button>
           <!-- The Modal -->
             <div id="myModal" class="modal">
-
               <!-- Modal content -->
               <div id="inner-modal" class="modal-content">
+                  <span id="modal-span" class="close">&times;</span>
+                  <h2>Please Set A Date, Time, and Priority</h2>
+                  <div id="current_time"></div>
+                  <br>
+                  <form id="modal-form" class="modal-select"  method="post">
+                    <label for="date">Please Select A Date: </label>
+                    <input type="date" id="dateSelection">
 
-                <span id="modal-span" class="close">&times;</span>
-                <h2>Please Set A Date, Time, and Priority</h2>
-                <form id="modal-form" class="modal-select"  method="post">
-                  <label for="date">Please Select A Date: </label>
-                  <input type="date" name="" value="">
-                  <label for="priority">Priority: </label>
-                  <select id="priority" name="role" class="form-select">
-                    <option selected disabled>Please Select</option>
-                    <option value='1'>High</option>
-                    <option value='2'>Medium</option>
-                    <option value='3'>Low</option>
-                </select><br>
-                <br>
-                <button type="submit" class="btn btn-success" onclick="alert('Your reminder has been set!')" >Set</button>
-                </form>
+                    <label>  Select Time:  </label>
+                    <select id="alarmHrs"></select>
+                    <select id="alarmMins"></select>
+
+                    <label for="priority">Priority: </label>
+                    <select id="priority" name="role" class="form-select">
+                      <option selected disabled>Please Select</option>
+                      <option id="1">High</option>
+                      <option id="2">Medium</option>
+                      <option id="3">Low</option>
+                    </select><br><br>
+                    <button type="submit" class="btn btn-success">Set</button>
+                    <!-- onclick="alert('Your reminder has been set!')" -->
+                  </form>
+                </div>
               </div>
-
-            </div>
-
           <textarea id="note-area" wrap="hard"></textarea>
         </div>
 

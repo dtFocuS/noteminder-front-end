@@ -11,11 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function main() {
-  createNewFolder()
+  createNewFolder();
   loadFolders();
   addNote();
-  addReminder();
-
+  openModal();
 }
 
 function loadFolders() {
@@ -298,16 +297,20 @@ function createNote(event, noteArea, folderId) {
   })
 }
 
-function addReminder() {
+function openModal() {
   const addReminderBtn = document.getElementById("add-reminder")
   addReminderBtn.addEventListener('click', () => {
-    setReminder()
+    showModal()
+    startTime()
+    hoursMenu()
+    minutesMenu()
   })
 }
 
-function setReminder() {
+function showModal() {
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-span");
+  let form = document.getElementById('modal-form')
 
   modal.style.display = "block";
 
@@ -319,4 +322,79 @@ function setReminder() {
       modal.style.display = "none";
     }
   })
+
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    setReminder(ev);
+    // buildAudio()
+  })
 }
+
+function startTime() {
+  let today = new Date();
+  let hour = today.getHours();
+  let minute = today.getMinutes();
+  let time = checkZero(hour) + ":" + checkZero(minute)
+  document.getElementById("current_time").innerHTML = time;
+
+  let t = setTimeout(startTime, 500)
+}
+
+function checkZero(i) {
+  if (i < 10) {
+    i = "0" + i
+  }
+  return i;
+}
+
+function hoursMenu(hour) {
+  let select = document.getElementById('alarmHrs');
+  const hours = 23;
+
+  for (let i = 0; i <= hours; i++) {
+    select.options[select.options.length] = new Option(i < 10 ? i : i, i);
+  }
+}
+
+function minutesMenu(minute) {
+  let select = document.getElementById('alarmMins');
+  const mins = 60;
+
+  for ( let i = 0; i < mins; i++) {
+    select.options[select.options.length] = new Option(i < 10 ?"0" + i : i, i);
+  }
+}
+
+// function buildAudio() {
+//   let priority = document.getElementById('priority')
+//   let myAudio = document.createElement
+
+//   myAudio.src = "https://www.freespecialeffects.co.uk/pages/various.html";
+//   myAudio.id = "myAudio"
+//   priority.appendChild(myAudio)
+// }
+
+function setReminder(ev) {
+  console.log(ev)
+
+  let date = document.getElementById("dateSelection");
+  let hour = document.getElementById("alarmHrs");
+  let minute = document.getElementById("alarmMins");
+
+  let selectedDate = ev.target.elements.dateSelection.value;
+  let selectedHour = ev.target.elements.alarmHrs.value;
+  let selectedMinute = ev.target.elements.alarmMins.value;
+  let selectedPriority = ev.target.elements.priority.value;
+
+  let alarmTime = selectedHour + ":" + addZero(selectedMinute);
+  console.log(alarmTime)
+
+  // document.getElementById('alarmHrs').disabled = true;
+  // document.getElementById('alarmMins').disabled = true;
+  // span.disabled = true;
+}
+
+function addZero(i) {
+  if (i < 10) { i = "0" + i };
+  return i;
+} 
