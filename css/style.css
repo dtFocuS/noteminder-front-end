@@ -206,7 +206,7 @@
   padding: 0;
   float: right;
   margin-right: 10%;
-  margin-top: 14%;
+  margin-top: 8%;
   color: white;
   cursor: pointer;
 }
@@ -230,7 +230,7 @@
 .div5 #add-note {
   float: right;
   margin-right: 10%;
-  margin-top: 7%;
+  margin-top: 8%;
   color: white;
   cursor: pointer;
 }
@@ -238,7 +238,7 @@
 .div5 #remove-note {
   float: right;
   margin-right: 10%;
-  margin-top: 7%;
+  margin-top: 8%;
   color: white;
   cursor: pointer;
 }
