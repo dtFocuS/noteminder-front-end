@@ -66,8 +66,7 @@ function displayNotes(notes, folder) {
       displayNote(note, noteSection, folder);
     }
   })
-  //child = noteSection.children[0].id.split("-")[1];
-  //console.log(count);
+
   if (count === 0) {
     CURRENTNOTE = undefined;
     noteArea.value = "";
@@ -82,26 +81,36 @@ function displayNote(note, noteSection, folder) {
   const noteArea = document.getElementById("note-area");
   const noteCard = document.createElement("div");
   const noteTitle = document.createElement("p");
-  const time = document.createElement("span");
+  const timeSpan = document.createElement("span");
   const folderName = document.createElement("p");
-  time.className = "time-created";
+  folderName.id = "folder-note-" + note.id;
+  timeSpan.className = "time-created";
   noteCard.id = "note-" + note.id;
   noteTitle.textContent = note.content.substring(0, 27);
-  time.textContent = note.time;
+  timeSpan.textContent = note.time;
   folderName.textContent = folder.name;
   noteCard.appendChild(noteTitle);
-  noteCard.appendChild(time);
+  noteCard.appendChild(timeSpan);
   noteCard.appendChild(folderName);
+  noteCard.appendChild(deleteNote);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
     CURRENTNOTE = note;
-    // console.log(CURRENTNOTE);
-    // noteArea.value = CURRENTNOTE.content;
     NEWNOTE = false;
     fetchSingleNote(note, noteArea);
-    //displayNoteContent(note, noteTitle);
   })
+
   UpdateNoteContent(folder);
+}
+
+function removeNote(note, noteCard) {
+  fetch(NOTES_URL + `/${note.id}`, {
+    method: 'DELETE'
+  })
+  .then(resp => resp.json())
+  .then(json => {
+    noteCard.remove();
+  })
 }
 
 function fetchSingleNote(note, noteArea) {
@@ -219,7 +228,7 @@ function buildNote() {
   const newContent = document.createElement("p");
   const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
-
+  folderName.className = "og-folder";
   console.log(currentTime);
   timeLabel.className = "time-created";
   //newCard.id = "note-" + note.id;
