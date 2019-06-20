@@ -64,8 +64,14 @@ function displayNotes(notes, folder) {
     }
   })
   //child = noteSection.children[0].id.split("-")[1];
-  //console.log(CURRENTNOTE);
-  noteArea.value = CURRENTNOTE.content;
+  console.log(CURRENTNOTE);
+  if (notes.length === 0) {
+    CURRENTNOTE = undefined;
+    noteArea.placeholder = "";
+  } else {
+    noteArea.value = CURRENTNOTE.content;
+  }
+
 }
 
 function displayNote(note, noteSection, folder) {
@@ -182,6 +188,7 @@ function addANewFolder(action, nameInput, ul) {
         nameInput.remove();
         createFolder(ul, li);
         //ul.appendChild(li);
+        //CURRENTNOTE = undefined;
       }
     }
   })
