@@ -273,7 +273,7 @@ function postNote(noteArea, noteSection, newCard) {
         if (CURRENTFOLDER) {
           folderId = CURRENTFOLDER.id;
         }
-        createNote(event, noteArea, folderId);
+        createNote(event, noteArea, folderId, newCard);
         //noteSection.children[0].remove();
       } else {
         console.log(noteSection.children[0]);
@@ -288,7 +288,7 @@ function postNote(noteArea, noteSection, newCard) {
   })
 }
 
-function createNote(event, noteArea, folderId) {
+function createNote(event, noteArea, folderId, newCard) {
   fetch(NOTES_URL, {
     method: "POST",
     headers: {
@@ -297,8 +297,11 @@ function createNote(event, noteArea, folderId) {
     body: JSON.stringify({note: {content: noteArea.value, folder_id: folderId}})
   })
   .then(resp => resp.json())
-  .then(json => {
-    NEWNOTE = false;
+  .then(note => {
+    newCard.addEventListener('click', (event) => {
+      CURRENTNOTE = note;
+      fetchSingleNote(note, noteArea);
+    })
   })
 }
 
