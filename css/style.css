@@ -216,11 +216,15 @@
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   padding-top: 10%; /* Location of the box */
-  left: 45%;
+  left: 30%;
   top: 0;
-  width: 50%; /* Full width */
+  width: 60%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
+}
+
+.modal button {
+  top: 10%;
 }
 
  /* Modal Content */
