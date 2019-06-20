@@ -10,7 +10,7 @@ const timeAbove = document.getElementById("date-span");
 
 document.addEventListener("DOMContentLoaded", () => {
   main()
-  setInterval(interval(), 1000)
+
 })
 
 function main() {
@@ -37,6 +37,7 @@ function displayFolder(folder) {
   const listItem = document.createElement("li");
   listItem.id = "folder-" + folder.id;
   listItem.textContent = folder.name;
+  CURRENTFOLDER = folder;
   listItem.addEventListener('click', (event) => {
     CURRENTFOLDER = folder;
     loadNotes(folder);
@@ -125,26 +126,45 @@ function deleteNote() {
       if (CURRENTNOTE) {
         const noteSection = document.getElementById("note-detail");
 
-        const noteArea = document.getElementById("note-area");
 
         removeNote(CURRENTNOTE, noteSection);
-        console.log(CURRENTNOTE);
-        const notes = noteSection.querySelectorAll('div');
-        if (notes.length > 0) {
-          //console.log(notes[0].id.split("-")[1]);
-          console.log(notes);
-          fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
 
-          timeAbove.textContent = CURRENTNOTE.time;
-          //noteArea.value = CURRENTNOTE.content;
-        } else {
-          CURRENTNOTE = undefined;
-          timeAbove.textContent = "";
-          noteArea.value = "";
-        }
+        // console.log(CURRENTNOTE);
+        // const notes = noteSection.querySelectorAll('div');
+        // if (notes.length > 0) {
+        //   //console.log(notes[0].id.split("-")[1]);
+        //   console.log(notes);
+        //   fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
+        //
+        //   timeAbove.textContent = CURRENTNOTE.time;
+        //   //noteArea.value = CURRENTNOTE.content;
+        // } else {
+        //   CURRENTNOTE = undefined;
+        //   timeAbove.textContent = "";
+        //   noteArea.value = "";
+        // }
       }
 
   })
+
+}
+
+function setCNoteAfterRemove(noteSection) {
+  //console.log(CURRENTNOTE);
+  const noteArea = document.getElementById("note-area");
+  const notes = noteSection.querySelectorAll('div');
+  if (notes.length > 0) {
+    //console.log(notes[0].id.split("-")[1]);
+    console.log(notes);
+    fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
+
+    //timeAbove.textContent = CURRENTNOTE.time;
+    //noteArea.value = CURRENTNOTE.content;
+  } else {
+    CURRENTNOTE = undefined;
+    timeAbove.textContent = "";
+    noteArea.value = "";
+  }
 
 }
 
@@ -156,7 +176,9 @@ function removeNote(note, noteSection) {
   .then(resp => resp.json())
   .then(json => {
     noteCard.remove()
+    setCNoteAfterRemove(noteSection)
   })
+  .catch(err => console.log(err))
 }
 
 function fetchSingleNote(note, noteArea) {
@@ -165,7 +187,7 @@ function fetchSingleNote(note, noteArea) {
   .then(json => {
     CURRENTNOTE = json
     noteArea.value = json.content
-
+    timeAbove.textContent = CURRENTNOTE.time;
   })
 
 }
