@@ -4,9 +4,10 @@ let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
 let CURRENTTITLE = undefined;
-let date = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
-let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
-let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
+let REMOVEDFOLDER = 0;
+let dateN = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
+let timeN = dateN[4].split(":")[0] + ":" + dateN[4].split(":")[1]; //"09:57"
+let currentTime = dateN[1] + " " + dateN[2] + ", " + dateN[3] + " at " + timeN; //Jun 20, 2019 at 09:56
 const timeAbove = document.getElementById("date-span");
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,6 +18,9 @@ function main() {
   createNewFolder();
   loadFolders();
   addNote();
+
+  //openModal();
+
   deleteNote();
   deleteFolder();
 }
@@ -68,6 +72,7 @@ function removeFolder(folder) {
 }
 
 function afterFolderRemove() {
+  REMOVEDFOLDER ++;
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
   CURRENTNOTE = undefined;
@@ -210,7 +215,7 @@ function UpdateNoteContent(folder, note) {
   const noteArea = document.getElementById("note-area");
   const noteSection = document.getElementById("note-detail");
   noteArea.addEventListener('input', () => {
-    let curTime = time;
+    let curTime = timeN;
     if (NEWNOTE === false) {
 
       const curNoteCard = document.querySelector(`div#note-${CURRENTNOTE.id}`);
@@ -333,7 +338,7 @@ function buildNote() {
   timeLabel.className = "time-created";
   //newCard.id = "note-" + note.id;
   newContent.textContent = "New Note";
-  timeLabel.textContent = time;
+  timeLabel.textContent = timeN;
   //`${new Date().getHours()}:${new Date().getMinutes()}`;
   if (CURRENTFOLDER) {
     folderName.textContent = `${CURRENTFOLDER.name}`;
@@ -365,6 +370,7 @@ function postNote(noteArea, noteSection, newCard) {
       if (noteArea.value.length < 27) {
         CURRENTTITLE.textContent = noteArea.value;
       }
+      timeAbove.textContent = currentTime;
     }
   })
 
@@ -417,11 +423,12 @@ function createNote(event, noteArea, folderId, newCard) {
   .then(note => {
     CURRENTNOTE = note
     newCard.id = "note-" + note.id
-    })
     newCard.addEventListener('click', (event) => {
       //console.log(newCard.id);
       fetchSingleNote(note, noteArea)
     })
+  })
+
   }
 
 // function openModal() {
