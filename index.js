@@ -76,6 +76,7 @@ function displayFolder(folder) {
     // }
     // const curFolder = document.querySelector(`li#folder-${CURRENTFOLDER.id}`);
     // curFolder.style.color = "black";
+    removeReminderButton();
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -268,6 +269,7 @@ function fetchSingleNote(note, noteArea) {
     CURRENTNOTE = json
     noteArea.value = json.content
     timeAbove.textContent = CURRENTNOTE.time;
+    removeReminderButton();
   })
 }
 
@@ -378,16 +380,20 @@ function addNote() {
   addButton.addEventListener('click', (event) => {
     //let div = document.querySelector('.div3')
     //let addReminderButton = document.createElement('button');
-    const reminderButton = document.getElementById('add-reminder-button');
-    if (reminderButton) {
-      reminderButton.remove();
-    }
+    removeReminderButton();
     CURRENTNOTE = undefined;
     NEWNOTE = true;
     console.log(CURRENTFOLDER);
     //addButton.style.pointerEvents = "none";
     buildNote();
   })
+}
+
+function removeReminderButton() {
+  const reminderButton = document.getElementById('add-reminder-button');
+  if (reminderButton) {
+    reminderButton.remove();
+  }
 }
 
 function buildNote() {
@@ -473,7 +479,7 @@ function createNote(event, noteArea, folderId, newCard) {
   addReminderButton.className = "add-reminder"
   addReminderButton.textContent = "Set Reminder"
 
-  
+
 //   div.appendChild(addReminderButton)
 //   addReminderButton.style.position = 'absolute';
 //   addReminderButton.style.top = '0';
@@ -485,8 +491,8 @@ function createNote(event, noteArea, folderId, newCard) {
 //     hoursMenu()
 //     minutesMenu()
 //   })
-  
-  
+
+
   //div.appendChild(addReminderButton)
   addReminderButton.style.display = 'block';
   div.insertBefore(addReminderButton, div.childNodes[0]);
@@ -556,6 +562,14 @@ function showModal(addReminderButton, newCard) {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
+    let selectedDate = ev.target.elements.dateSelection.value;
+    console.log(selectedDate)
+    let selectedHour = ev.target.elements.alarmHrs.value;
+    let selectedMinute = ev.target.elements.alarmMins.value;
+    let selectedPriority = ev.target.elements.priority.value;
+    addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
+    clearModal(addReminderButton);
+    Myinterval = setInterval(setReminder, 1000, ev, newCard);
   })
 }
 
