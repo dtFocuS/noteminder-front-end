@@ -63,6 +63,10 @@ function displayFolder(folder) {
 
   //console.log(listItem);
   listItem.addEventListener('click', (event) => {
+    const div3 = document.querySelector(".div3");
+    if (div3.querySelector("button")) {
+      div3.querySelector("button").remove();
+    }
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -177,6 +181,10 @@ function displayNote(note, noteSection, folder) {
   noteCard.appendChild(folderName);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
+    const div3 = document.querySelector(".div3");
+    if (div3.querySelector("button")) {
+      div3.querySelector("button").remove();
+    }
     CURRENTNOTE = note;
     NEWNOTE = false;
     timeAbove.textContent = CURRENTNOTE.time;
@@ -184,7 +192,7 @@ function displayNote(note, noteSection, folder) {
   })
 
   UpdateNoteContent(folder, note);
-  folderName.style.borderBottom = "1px solid black"
+  folderName.style.borderBottom = "1px solid #D1D0D0"
 }
 
 function deleteNote() {
@@ -389,7 +397,7 @@ function buildNote() {
   noteArea.value = "";
   noteArea.focus();
   postNote(noteArea, noteSection, newCard);
-  folderName.style.borderBottom = "1px solid black";
+  folderName.style.borderBottom = "1px solid #D1D0D0";
 }
 
 function postNote(noteArea, noteSection, newCard) {
@@ -408,10 +416,14 @@ function postNote(noteArea, noteSection, newCard) {
 
   noteArea.addEventListener('blur', function a(event) {
     if (NEWNOTE === true) {
+      let div = document.querySelector('.div3')
       let folderId = null;
       if (noteArea.value !== "" && noteArea.value != null) {
         if (CURRENTFOLDER) {
           folderId = CURRENTFOLDER.id;
+        }
+        if (div.querySelector("button")) {
+          div.querySelector("button").remove();
         }
         createNote(event, noteArea, folderId, newCard);
       } else {
@@ -616,8 +628,8 @@ function setReminder(ev, newCard) {
 function endReminder(newCard) {
   let audio = document.getElementById('audio');
   //clearInterval(Myinterval);
-  const cardTitle = newCard.querySelector("p");
-  window.alert("Reminder: " + cardTitle.textContent);
+  const cardPs = newCard.querySelectorAll("p");
+  window.alert("Reminder: " + cardPs[0].textContent + " - " + cardPs[1].textContent);
   clearInterval(Myinterval);
   audio.pause();
 }
