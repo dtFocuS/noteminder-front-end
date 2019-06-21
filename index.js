@@ -445,6 +445,21 @@ function createNote(event, noteArea, folderId, newCard) {
   //addReminderButton.id = newCard.id
   addReminderButton.className = "add-reminder"
   addReminderButton.textContent = "Set Reminder"
+
+  
+//   div.appendChild(addReminderButton)
+//   addReminderButton.style.position = 'absolute';
+//   addReminderButton.style.top = '0';
+//   addReminderButton.style.left = '60%';
+
+//   addReminderButton.addEventListener('click', () => {
+//     showModal()
+//     startTime()
+//     hoursMenu()
+//     minutesMenu()
+//   })
+  
+  
   //div.appendChild(addReminderButton)
   addReminderButton.style.display = 'block';
   div.insertBefore(addReminderButton, div.childNodes[0]);
@@ -515,19 +530,30 @@ function showModal(addReminderButton, newCard) {
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
 
+// function clearModal() {
     //Myinterval = setInterval(setReminder, 1000, ev)
-    let selectedDate = ev.target.elements.dateSelection.value;
-    console.log(selectedDate)
-    let selectedHour = ev.target.elements.alarmHrs.value;
-    let selectedMinute = ev.target.elements.alarmMins.value;
-    let selectedPriority = ev.target.elements.priority.value;
-    addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
-    clearModal(addReminderButton);
-    Myinterval = setInterval(setReminder, 1000, ev, newCard);
-
+//     let selectedDate = ev.target.elements.dateSelection.value;
+//     console.log(selectedDate)
+//     let selectedHour = ev.target.elements.alarmHrs.value;
+//     let selectedMinute = ev.target.elements.alarmMins.value;
+//     let selectedPriority = ev.target.elements.priority.value;
+//     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
+//     clearModal(addReminderButton);
+//     Myinterval = setInterval(setReminder, 1000, ev, newCard);
   })
 }
 
+//   document.getElementById('dateSelection').disabled = false;
+//   document.getElementById('dateSelection').value = "";
+//   document.getElementById('priority').disabled = false;
+//   document.getElementById('priority').value = "";
+//   document.getElementById('alarmHrs').disabled = false;
+//   document.getElementById('alarmHrs').value = "";
+//   document.getElementById('alarmMins').disabled = false;
+//   document.getElementById('alarmMins').value = "";
+
+//   let audio = document.getElementById('audio');
+//   audio.pause();
 function clearModal(addReminderButton) {
   //let audio = document.getElementById('audio');
   const modal = document.getElementById("myModal");
