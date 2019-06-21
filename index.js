@@ -529,6 +529,8 @@ function showModal(addReminderButton, newCard) {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
+  })
+}
 
 // function clearModal() {
     //Myinterval = setInterval(setReminder, 1000, ev)
@@ -540,8 +542,7 @@ function showModal(addReminderButton, newCard) {
 //     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
 //     clearModal(addReminderButton);
 //     Myinterval = setInterval(setReminder, 1000, ev, newCard);
-  })
-}
+
 
 //   document.getElementById('dateSelection').disabled = false;
 //   document.getElementById('dateSelection').value = "";
@@ -554,6 +555,8 @@ function showModal(addReminderButton, newCard) {
 
 //   let audio = document.getElementById('audio');
 //   audio.pause();
+
+
 function clearModal(addReminderButton) {
   //let audio = document.getElementById('audio');
   const modal = document.getElementById("myModal");
