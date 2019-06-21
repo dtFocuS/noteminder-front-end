@@ -461,6 +461,7 @@ function showModal() {
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
     Myinterval = setInterval(setReminder, 1000, ev)
+    modal.style.display = "none";
   })
 }
 
