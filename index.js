@@ -514,6 +514,7 @@ function showModal(addReminderButton, newCard) {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
+
     //Myinterval = setInterval(setReminder, 1000, ev)
     let selectedDate = ev.target.elements.dateSelection.value;
     console.log(selectedDate)
@@ -523,6 +524,7 @@ function showModal(addReminderButton, newCard) {
     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
     clearModal(addReminderButton);
     Myinterval = setInterval(setReminder, 1000, ev, newCard);
+
   })
 }
 
