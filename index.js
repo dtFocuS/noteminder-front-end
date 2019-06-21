@@ -9,6 +9,8 @@ let REMOVEDFOLDER = 0;
 let REMINDERID = 0;
 let JUSTCREATED = false;
 let ALLREMINDERS = undefined;
+let PREVIOUSNOTE = undefined;
+let PREVIOUSFOLDER = undefined;
 let dateN = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
 let timeN = dateN[4].split(":")[0] + ":" + dateN[4].split(":")[1]; //"09:57"
 let currentTime = dateN[1] + " " + dateN[2] + ", " + dateN[3] + " at " + timeN; //Jun 20, 2019 at 09:56
@@ -60,13 +62,20 @@ function displayFolder(folder) {
   } else {
     CURRENTFOLDER = undefined;
   }
-
+  //folderList.appendChild(listItem);
   //console.log(listItem);
   listItem.addEventListener('click', (event) => {
-    const div3 = document.querySelector(".div3");
-    // if (div3.querySelector("button")) {
-    //   div3.querySelector("button").remove();
+    // if (PREVIOUSFOLDER === undefined && CURRENTFOLDER !== undefined) {
+    //   PREVIOUSFOLDER = CURRENTFOLDER;
+    //   const preFolder = folderList.querySelector(`li#folder-${PREVIOUSFOLDER.id}`);
+    //   preFolder.style.color = "black";
+    // } else {
+    //   // const preFolder = folderList.querySelector(`lis#folder-${PREVIOUSFOLDER.id}`);
+    //   // preNoteCard.style.color = "white";
+    //   // PREVIOUSFOLDER = CURRENTFOLDER;
     // }
+    // const curFolder = document.querySelector(`li#folder-${CURRENTFOLDER.id}`);
+    // curFolder.style.color = "black";
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -185,7 +194,19 @@ function displayNote(note, noteSection, folder) {
     // if (div3.querySelector("button")) {
     //   div3.querySelector("button").remove();
     // }
+
     CURRENTNOTE = note;
+    // if (PREVIOUSNOTE === undefined) {
+    //   PREVIOUSNOTE = CURRENTNOTE;
+    //   const preNoteCard = noteSection.querySelector(`div#note-${PREVIOUSNOTE.id}`);
+    //   preNoteCard.style.background = "#EDD1B0";
+    // } else {
+    //   const preNoteCard = noteSection.querySelector(`div#note-${PREVIOUSNOTE.id}`);
+    //   preNoteCard.style.background = "lightgoldenrodyellow";
+    //   PREVIOUSNOTE = CURRENTNOTE;
+    // }
+    // const curNoteCard = noteSection.querySelector(`div#note-${CURRENTNOTE.id}`);
+    // curNoteCard.style.background = "#EDD1B0";
     NEWNOTE = false;
     timeAbove.textContent = CURRENTNOTE.time;
     fetchSingleNote(note, noteArea);
@@ -355,7 +376,12 @@ function addNote() {
   const addButton = document.getElementById("add-note");
   const content = document.getElementById("note-area");
   addButton.addEventListener('click', (event) => {
-
+    //let div = document.querySelector('.div3')
+    //let addReminderButton = document.createElement('button');
+    const reminderButton = document.getElementById('add-reminder-button');
+    if (reminderButton) {
+      reminderButton.remove();
+    }
     CURRENTNOTE = undefined;
     NEWNOTE = true;
     console.log(CURRENTFOLDER);
@@ -442,6 +468,7 @@ function createNote(event, noteArea, folderId, newCard) {
 
   let div = document.querySelector('.div3')
   let addReminderButton = document.createElement('button');
+  addReminderButton.id = "add-reminder-button";
   //addReminderButton.id = newCard.id
   addReminderButton.className = "add-reminder"
   addReminderButton.textContent = "Set Reminder"
