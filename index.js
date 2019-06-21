@@ -562,6 +562,7 @@ function showModal(addReminderButton, newCard) {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
+
     let selectedDate = ev.target.elements.dateSelection.value;
     console.log(selectedDate)
     let selectedHour = ev.target.elements.alarmHrs.value;
@@ -570,33 +571,25 @@ function showModal(addReminderButton, newCard) {
     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
     clearModal(addReminderButton);
     Myinterval = setInterval(setReminder, 1000, ev, newCard);
+
   })
 }
 
-// function clearModal() {
-    //Myinterval = setInterval(setReminder, 1000, ev)
-//     let selectedDate = ev.target.elements.dateSelection.value;
-//     console.log(selectedDate)
-//     let selectedHour = ev.target.elements.alarmHrs.value;
-//     let selectedMinute = ev.target.elements.alarmMins.value;
-//     let selectedPriority = ev.target.elements.priority.value;
-//     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
-//     clearModal(addReminderButton);
-//     Myinterval = setInterval(setReminder, 1000, ev, newCard);
+function clearModal() {
+  let audio = document.getElementById('audio');
 
+  clearInterval(Myinterval);
 
-//   document.getElementById('dateSelection').disabled = false;
-//   document.getElementById('dateSelection').value = "";
-//   document.getElementById('priority').disabled = false;
-//   document.getElementById('priority').value = "";
-//   document.getElementById('alarmHrs').disabled = false;
-//   document.getElementById('alarmHrs').value = "";
-//   document.getElementById('alarmMins').disabled = false;
-//   document.getElementById('alarmMins').value = "";
-
-//   let audio = document.getElementById('audio');
-//   audio.pause();
-
+  document.getElementById('dateSelection').disabled = false;
+  document.getElementById('dateSelection').value = "";
+  document.getElementById('priority').disabled = false;
+  document.getElementById('priority').value = "";
+  document.getElementById('alarmHrs').disabled = false;
+  document.getElementById('alarmHrs').value = "";
+  document.getElementById('alarmMins').disabled = false;
+  document.getElementById('alarmMins').value = "";
+  audio.pause();
+}
 
 function clearModal(addReminderButton) {
   //let audio = document.getElementById('audio');
