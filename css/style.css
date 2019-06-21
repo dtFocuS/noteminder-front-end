@@ -21,7 +21,7 @@
   top: 0; /* Stay at the top */
   left: 0px;
   background-color: gray;
-  overflow: hidden; /* Disable horizontal scroll */
+  overflow: scroll; /* Disable horizontal scroll */
   padding-top: 20px;
 }
 
@@ -107,6 +107,7 @@
   background-color: blanchedalmond;
   height: 102.75%;
   width: 100%;
+  overflow: scroll;
 }
 
 .div2 a {
