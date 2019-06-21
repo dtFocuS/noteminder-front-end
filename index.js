@@ -403,7 +403,7 @@ function createNote(event, noteArea, folderId, newCard) {
   div.appendChild(addReminderButton)
   addReminderButton.style.position = 'absolute';
   addReminderButton.style.top = '0';
-  addReminderButton.style.left = '55%';
+  addReminderButton.style.left = '60%';
 
   addReminderButton.addEventListener('click', () => {
     showModal()
@@ -466,14 +466,19 @@ function showModal() {
 }
 
 function clearModal() {
-  let audio = document.getElementById('audio');
 
   clearInterval(Myinterval);
 
   document.getElementById('dateSelection').disabled = false;
+  document.getElementById('dateSelection').value = "";
   document.getElementById('priority').disabled = false;
+  document.getElementById('priority').value = "";
   document.getElementById('alarmHrs').disabled = false;
+  document.getElementById('alarmHrs').value = "";
   document.getElementById('alarmMins').disabled = false;
+  document.getElementById('alarmMins').value = "";
+
+  let audio = document.getElementById('audio');
   audio.pause();
 }
 
