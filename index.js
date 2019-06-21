@@ -9,9 +9,10 @@ let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
 let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
 const timeAbove = document.getElementById("date-span");
 
+// document.getElementById('add-reminder').style.display = "none";
+
 document.addEventListener("DOMContentLoaded", () => {
   main()
-
 })
 
 function main() {
@@ -125,11 +126,16 @@ function displayNotes(notes, folder) {
 
 function displayNote(note, noteSection, folder) {
   //console.log(note);
+
+  const setReminderButton = document.querySelector('.add-reminder');
   const noteArea = document.getElementById("note-area");
   const noteCard = document.createElement("div");
   const noteTitle = document.createElement("p");
   const timeSpan = document.createElement("span");
   const folderName = document.createElement("p");
+  // setReminderButton.id = note.id
+
+  // document.getElementById('add-reminder').style.display = "block";
 
   folderName.id = "folder-note-" + note.id;
   timeSpan.className = "time-created";
@@ -163,9 +169,7 @@ function deleteNote() {
         removeNote(CURRENTNOTE, noteSection);
 
       }
-
   })
-
 }
 
 function setCNoteAfterRemove(noteSection) {
@@ -335,6 +339,7 @@ function buildNote() {
   const newContent = document.createElement("p");
   const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
+
   CURRENTTITLE = newContent;
   folderName.className = "og-folder";
   console.log(currentTime);
@@ -396,6 +401,24 @@ function postNote(noteArea, noteSection, newCard) {
 }
 
 function createNote(event, noteArea, folderId, newCard) {
+
+  let div = document.querySelector('.div3')
+  let addReminderButton = document.createElement('button');
+  addReminderButton.id = newCard.id
+  addReminderButton.className = "add-reminder"
+  addReminderButton.textContent = "Set Reminder"
+  div.appendChild(addReminderButton)
+  addReminderButton.style.position = 'absolute';
+  addReminderButton.style.top = '0';
+  addReminderButton.style.left = '45%';
+
+  addReminderButton.addEventListener('click', () => {
+    showModal()
+    startTime()
+    hoursMenu()
+    minutesMenu()
+  })
+
   fetch(NOTES_URL, {
     method: "POST",
     headers: {
@@ -407,22 +430,22 @@ function createNote(event, noteArea, folderId, newCard) {
   .then(note => {
     CURRENTNOTE = note
     newCard.id = "note-" + note.id
+    })
     newCard.addEventListener('click', (event) => {
       //console.log(newCard.id);
       fetchSingleNote(note, noteArea)
     })
-  })
-}
+  }
 
-function openModal() {
-  const addReminderBtn = document.getElementById("add-reminder")
-  addReminderBtn.addEventListener('click', () => {
-    showModal()
-    startTime()
-    hoursMenu()
-    minutesMenu()
-  })
-}
+// function openModal() {
+//   const addReminderBtn = document.querySelector(".add-reminder")
+//   addReminderBtn.addEventListener('click', () => {
+//     showModal()
+//     startTime()
+//     hoursMenu()
+//     minutesMenu()
+//   })
+// }
 
 function showModal() {
   const modal = document.getElementById("myModal");
