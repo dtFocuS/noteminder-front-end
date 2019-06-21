@@ -1,10 +1,14 @@
 const FOLDERS_URL = "http://localhost:3000/api/v1/folders"
 const NOTES_URL = "http://localhost:3000/api/v1/notes"
+const REMINDERS_URL = "http://localhost:3000/api/v1/reminders"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
 let CURRENTTITLE = undefined;
 let REMOVEDFOLDER = 0;
+let REMINDERID = 0;
+let JUSTCREATED = false;
+let ALLREMINDERS = undefined;
 let dateN = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
 let timeN = dateN[4].split(":")[0] + ":" + dateN[4].split(":")[1]; //"09:57"
 let currentTime = dateN[1] + " " + dateN[2] + ", " + dateN[3] + " at " + timeN; //Jun 20, 2019 at 09:56
@@ -18,9 +22,7 @@ function main() {
   createNewFolder();
   loadFolders();
   addNote();
-
-  //openModal();
-
+  loadReminders();
   deleteNote();
   deleteFolder();
 }
@@ -41,9 +43,30 @@ function displayFolder(folder) {
   const listItem = document.createElement("li");
   listItem.id = "folder-" + folder.id;
   listItem.textContent = folder.name;
-  CURRENTFOLDER = folder;
+  if (JUSTCREATED) {
+    console.log("just created");
+    CURRENTFOLDER = folder;
+    const noteSection = document.getElementById("note-detail");
+    const noteArea = document.getElementById("note-area");
+    CURRENTNOTE = undefined;
+    timeAbove.textContent = "";
+    noteArea.value = "";
+
+    //const ogFolder = document.getElementById("og-folder");
+    while (noteSection.lastChild) {
+      noteSection.removeChild(noteSection.lastChild);
+    }
+    JUSTCREATED = false;
+  } else {
+    CURRENTFOLDER = undefined;
+  }
+
   //console.log(listItem);
   listItem.addEventListener('click', (event) => {
+    const div3 = document.querySelector(".div3");
+    // if (div3.querySelector("button")) {
+    //   div3.querySelector("button").remove();
+    // }
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -92,6 +115,14 @@ function loadNotes(folder) {
   .then(json => displayNotes(json, folder))
 }
 
+function loadReminders() {
+  fetch(REMINDERS_URL)
+  .then(resp => resp.json())
+  .then(reminders => {
+    ALLREMINDERS = reminders;
+  })
+}
+
 
 function displayNotes(notes, folder) {
   const noteSection = document.getElementById("note-detail");
@@ -126,18 +157,22 @@ function displayNotes(notes, folder) {
 function displayNote(note, noteSection, folder) {
   //console.log(note);
 
-  const setReminderButton = document.querySelector('.add-reminder');
+  //const setReminderButton = document.querySelector('.add-reminder');
   const noteArea = document.getElementById("note-area");
   const noteCard = document.createElement("div");
   const noteTitle = document.createElement("p");
   const timeSpan = document.createElement("span");
   const folderName = document.createElement("p");
-  setReminderButton.id = note.id
-
+  //setReminderButton.id = note.id
   folderName.id = "folder-note-" + note.id;
   timeSpan.className = "time-created";
   noteCard.id = "note-" + note.id;
   noteTitle.textContent = note.content.substring(0, 27);
+  ALLREMINDERS.forEach(reminder => {
+    if (reminder.note_id === note.id) {
+      noteTitle.style.color = "red";
+    }
+  })
   timeSpan.textContent = note.time;
   timeAbove.textContent = CURRENTNOTE.time;
   folderName.textContent = folder.name;
@@ -146,6 +181,10 @@ function displayNote(note, noteSection, folder) {
   noteCard.appendChild(folderName);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
+    // const div3 = document.querySelector(".div3");
+    // if (div3.querySelector("button")) {
+    //   div3.querySelector("button").remove();
+    // }
     CURRENTNOTE = note;
     NEWNOTE = false;
     timeAbove.textContent = CURRENTNOTE.time;
@@ -153,7 +192,7 @@ function displayNote(note, noteSection, folder) {
   })
 
   UpdateNoteContent(folder, note);
-  folderName.style.borderBottom = "1px solid black"
+  folderName.style.borderBottom = "1px solid #D1D0D0"
 }
 
 function deleteNote() {
@@ -161,7 +200,7 @@ function deleteNote() {
   deleteNoteButton.addEventListener('click', (event) => {
       if (CURRENTNOTE) {
         const noteSection = document.getElementById("note-detail");
-        console.log(CURRENTNOTE);
+        //console.log(CURRENTNOTE);
 
         removeNote(CURRENTNOTE, noteSection);
 
@@ -175,7 +214,7 @@ function setCNoteAfterRemove(noteSection) {
   const notes = noteSection.querySelectorAll('div');
   if (notes.length > 0) {
     //console.log(notes[0].id.split("-")[1]);
-    console.log(notes);
+    //console.log(notes);
     fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
 
     //timeAbove.textContent = CURRENTNOTE.time;
@@ -300,6 +339,7 @@ function addANewFolder(action, nameInput, ul) {
 }
 
 function createFolder(ul, li) {
+  JUSTCREATED = true;
   fetch(FOLDERS_URL, {
     method: "POST",
     headers: {
@@ -318,7 +358,7 @@ function addNote() {
 
     CURRENTNOTE = undefined;
     NEWNOTE = true;
-    console.log(NEWNOTE);
+    console.log(CURRENTFOLDER);
     //addButton.style.pointerEvents = "none";
     buildNote();
   })
@@ -357,7 +397,7 @@ function buildNote() {
   noteArea.value = "";
   noteArea.focus();
   postNote(noteArea, noteSection, newCard);
-  folderName.style.borderBottom = "1px solid black";
+  folderName.style.borderBottom = "1px solid #D1D0D0";
 }
 
 function postNote(noteArea, noteSection, newCard) {
@@ -376,11 +416,16 @@ function postNote(noteArea, noteSection, newCard) {
 
   noteArea.addEventListener('blur', function a(event) {
     if (NEWNOTE === true) {
+      let div = document.querySelector('.div3')
       let folderId = null;
       if (noteArea.value !== "" && noteArea.value != null) {
         if (CURRENTFOLDER) {
           folderId = CURRENTFOLDER.id;
         }
+        //removing add reminder button without when creating note without adding reminder
+        // if (div.querySelector("button")) {
+        //   div.querySelector("button").remove();
+        // }
         createNote(event, noteArea, folderId, newCard);
       } else {
         noteSection.children[0].remove();
@@ -397,20 +442,37 @@ function createNote(event, noteArea, folderId, newCard) {
 
   let div = document.querySelector('.div3')
   let addReminderButton = document.createElement('button');
-  addReminderButton.id = newCard.id
+  //addReminderButton.id = newCard.id
   addReminderButton.className = "add-reminder"
   addReminderButton.textContent = "Set Reminder"
-  div.appendChild(addReminderButton)
-  addReminderButton.style.position = 'absolute';
-  addReminderButton.style.top = '0';
-  addReminderButton.style.left = '60%';
 
-  addReminderButton.addEventListener('click', () => {
-    showModal()
-    startTime()
-    hoursMenu()
-    minutesMenu()
-  })
+  
+//   div.appendChild(addReminderButton)
+//   addReminderButton.style.position = 'absolute';
+//   addReminderButton.style.top = '0';
+//   addReminderButton.style.left = '60%';
+
+//   addReminderButton.addEventListener('click', () => {
+//     showModal()
+//     startTime()
+//     hoursMenu()
+//     minutesMenu()
+//   })
+  
+  
+  //div.appendChild(addReminderButton)
+  addReminderButton.style.display = 'block';
+  div.insertBefore(addReminderButton, div.childNodes[0]);
+  //addReminderButton.style.position = 'absolute';
+  addReminderButton.style.margin = 'auto';
+  //addReminderButton.style.right = '40%';
+
+  // addReminderButton.addEventListener('click', () => {
+  //   showModal()
+  //   startTime()
+  //   hoursMenu()
+  //   minutesMenu()
+  // })
 
   fetch(NOTES_URL, {
     method: "POST",
@@ -423,13 +485,21 @@ function createNote(event, noteArea, folderId, newCard) {
   .then(note => {
     CURRENTNOTE = note
     newCard.id = "note-" + note.id
+    REMINDERID = note.id;
     newCard.addEventListener('click', (event) => {
       //console.log(newCard.id);
       fetchSingleNote(note, noteArea)
     })
+    console.log(REMINDERID);
+    addReminderButton.addEventListener('click', () => {
+      showModal(addReminderButton, newCard);
+      startTime()
+      hoursMenu()
+      minutesMenu()
+    })
   })
 
-  }
+}
 
 // function openModal() {
 //   const addReminderBtn = document.querySelector(".add-reminder")
@@ -441,17 +511,16 @@ function createNote(event, noteArea, folderId, newCard) {
 //   })
 // }
 
-function showModal() {
+function showModal(addReminderButton, newCard) {
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-span");
   let form = document.getElementById('modal-form')
   let clearButton = document.getElementById('clear-modal')
 
   modal.style.display = "block";
-
+  console.log(modal);
   clearButton.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    clearModal();
+    clearModal(addReminderButton);
   })
 
   span.addEventListener('click', () => {
@@ -460,26 +529,42 @@ function showModal() {
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    Myinterval = setInterval(setReminder, 1000, ev)
-    modal.style.display = "none";
+
+// function clearModal() {
+    //Myinterval = setInterval(setReminder, 1000, ev)
+//     let selectedDate = ev.target.elements.dateSelection.value;
+//     console.log(selectedDate)
+//     let selectedHour = ev.target.elements.alarmHrs.value;
+//     let selectedMinute = ev.target.elements.alarmMins.value;
+//     let selectedPriority = ev.target.elements.priority.value;
+//     addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard);
+//     clearModal(addReminderButton);
+//     Myinterval = setInterval(setReminder, 1000, ev, newCard);
   })
 }
 
-function clearModal() {
+//   document.getElementById('dateSelection').disabled = false;
+//   document.getElementById('dateSelection').value = "";
+//   document.getElementById('priority').disabled = false;
+//   document.getElementById('priority').value = "";
+//   document.getElementById('alarmHrs').disabled = false;
+//   document.getElementById('alarmHrs').value = "";
+//   document.getElementById('alarmMins').disabled = false;
+//   document.getElementById('alarmMins').value = "";
 
-  clearInterval(Myinterval);
-
-  document.getElementById('dateSelection').disabled = false;
-  document.getElementById('dateSelection').value = "";
-  document.getElementById('priority').disabled = false;
-  document.getElementById('priority').value = "";
-  document.getElementById('alarmHrs').disabled = false;
-  document.getElementById('alarmHrs').value = "";
-  document.getElementById('alarmMins').disabled = false;
-  document.getElementById('alarmMins').value = "";
-
-  let audio = document.getElementById('audio');
-  audio.pause();
+//   let audio = document.getElementById('audio');
+//   audio.pause();
+function clearModal(addReminderButton) {
+  //let audio = document.getElementById('audio');
+  const modal = document.getElementById("myModal");
+  //clearInterval(Myinterval);
+  modal.style.display = "none";
+  addReminderButton.remove();
+  // document.getElementById('dateSelection').disabled = false;
+  // document.getElementById('priority').disabled = false;
+  // document.getElementById('alarmHrs').disabled = false;
+  // document.getElementById('alarmMins').disabled = false;
+  //audio.pause();
 }
 
 function startTime() {
@@ -516,7 +601,7 @@ function minutesMenu(minute) {
   }
 }
 
-function setReminder(ev) {
+function setReminder(ev, newCard) {
   console.log(ev)
 
   const modal = document.getElementById("myModal");
@@ -533,7 +618,7 @@ function setReminder(ev) {
 
   let alarmTime = selectedHour + ":" + addZero(selectedMinute);
   console.log(alarmTime)
-
+  //addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority);
   document.getElementById('alarmHrs').disabled = true;
   document.getElementById('alarmMins').disabled = true;
   document.getElementById('priority').disabled = true;
@@ -555,13 +640,45 @@ function setReminder(ev) {
 
   let audio = document.getElementById('audio');
 
-  if(actualTime === alarmTime && currentActualDate === selectedDate) {
+  if(actualTime == alarmTime && currentActualDate == selectedDate) {
     audio.play();
-    window.alert("ALARM!!!!!!!");
-    clearInterval(Myinterval);
-    clearModal();
-    modal.style.display = "none";
+    // window.alert("ALARM!!!!!!!");
+    // clearInterval(Myinterval);
+    //clearModal();
+    endReminder(newCard);
+
+    //modal.style.display = "none";
   }
+}
+
+function endReminder(newCard) {
+  let audio = document.getElementById('audio');
+  //clearInterval(Myinterval);
+  const cardPs = newCard.querySelectorAll("p");
+  window.alert("Reminder: " + cardPs[0].textContent + " - " + cardPs[1].textContent);
+  clearInterval(Myinterval);
+  audio.pause();
+}
+
+
+function addReminder(selectedDate, selectedHour, selectedMinute, selectedPriority, newCard) {
+  console.log(CURRENTNOTE);
+  console.log("in reminder");
+  fetch(REMINDERS_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({reminder: {date: selectedDate, time: selectedHour + ":" + selectedMinute, priority: selectedPriority, note_id: REMINDERID}})
+  })
+  .then(resp => resp.json())
+  .then(json => showReminder(newCard))
+}
+
+function showReminder(newCard) {
+  const cardTitle = newCard.querySelector("p");
+  cardTitle.style.color = "red";
+
 }
 
 function addZero(i) {
