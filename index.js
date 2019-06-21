@@ -3,6 +3,7 @@ const NOTES_URL = "http://localhost:3000/api/v1/notes"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
+let CURRENTTITLE = undefined;
 let date = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
 let time = date[4].split(":")[0] + ":" + date[4].split(":")[1]; //"09:57"
 let currentTime = date[1] + " " + date[2] + ", " + date[3] + " at " + time; //Jun 20, 2019 at 09:56
@@ -20,6 +21,7 @@ function main() {
   addNote();
   openModal();
   deleteNote();
+  deleteFolder();
 }
 
 function loadFolders() {
@@ -38,6 +40,8 @@ function displayFolder(folder) {
   const listItem = document.createElement("li");
   listItem.id = "folder-" + folder.id;
   listItem.textContent = folder.name;
+  CURRENTFOLDER = folder;
+  //console.log(listItem);
   listItem.addEventListener('click', (event) => {
     CURRENTFOLDER = folder;
     loadNotes(folder);
@@ -45,21 +49,59 @@ function displayFolder(folder) {
   folderList.appendChild(listItem);
 }
 
+function deleteFolder() {
+  const deleteFolder = document.getElementById("delete-folder");
+  deleteFolder.addEventListener('click', (event) => {
+    if (CURRENTFOLDER) {
+      removeFolder(CURRENTFOLDER);
+    }
+  })
+}
+
+function removeFolder(folder) {
+  const currentFolder = document.querySelector(`#folder-${folder.id}`);
+  fetch(FOLDERS_URL + "/" + folder.id, {
+    method: "DELETE"
+  })
+  .then(resp => resp.json())
+  .then(json => {
+    currentFolder.remove();
+    afterFolderRemove()
+  })
+}
+
+function afterFolderRemove() {
+  const noteArea = document.getElementById("note-area");
+  const noteSection = document.getElementById("note-detail");
+  CURRENTNOTE = undefined;
+  timeAbove.textContent = "";
+  noteArea.value = "";
+
+  //const ogFolder = document.getElementById("og-folder");
+  while (noteSection.lastChild) {
+    noteSection.removeChild(noteSection.lastChild);
+  }
+}
+
+
 function loadNotes(folder) {
   fetch(NOTES_URL)
   .then(resp => resp.json())
   .then(json => displayNotes(json, folder))
 }
 
+
 function displayNotes(notes, folder) {
   const noteSection = document.getElementById("note-detail");
   const noteArea = document.getElementById("note-area");
+  //const ogFolder = document.getElementById("og-folder");
   let count = 0;
   let firstNote = true;
   while (noteSection.lastChild) {
     noteSection.removeChild(noteSection.lastChild);
   }
-  //console.log(notes.length);
+
+
 
   for (let i = notes.length - 1; i >= 0; i--) {
     if (notes[i].folder_id === folder.id) {
@@ -71,16 +113,7 @@ function displayNotes(notes, folder) {
       displayNote(notes[i], noteSection, folder);
     }
   }
-  // notes.forEach(note => {
-  //   if (note.folder_id === folder.id) {
-  //     if (firstNote) {
-  //       CURRENTNOTE = note;
-  //       firstNote = false;
-  //     }
-  //     count++;
-  //     displayNote(note, noteSection, folder);
-  //   }
-  // })
+
   if (count === 0) {
     CURRENTNOTE = undefined;
     noteArea.value = "";
@@ -123,6 +156,7 @@ function displayNote(note, noteSection, folder) {
   })
 
   UpdateNoteContent(folder, note);
+  folderName.style.borderBottom = "1px solid black"
 }
 
 function deleteNote() {
@@ -130,26 +164,31 @@ function deleteNote() {
   deleteNoteButton.addEventListener('click', (event) => {
       if (CURRENTNOTE) {
         const noteSection = document.getElementById("note-detail");
-
-        const noteArea = document.getElementById("note-area");
+        console.log(CURRENTNOTE);
 
         removeNote(CURRENTNOTE, noteSection);
-        console.log(CURRENTNOTE);
-        const notes = noteSection.querySelectorAll('div');
-        if (notes.length > 0) {
-          //console.log(notes[0].id.split("-")[1]);
-          console.log(notes);
-          fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
 
-          timeAbove.textContent = CURRENTNOTE.time;
-          //noteArea.value = CURRENTNOTE.content;
-        } else {
-          CURRENTNOTE = undefined;
-          timeAbove.textContent = "";
-          noteArea.value = "";
-        }
       }
   })
+}
+
+function setCNoteAfterRemove(noteSection) {
+  //console.log(CURRENTNOTE);
+  const noteArea = document.getElementById("note-area");
+  const notes = noteSection.querySelectorAll('div');
+  if (notes.length > 0) {
+    //console.log(notes[0].id.split("-")[1]);
+    console.log(notes);
+    fetchSingleNote({id: notes[0].id.split("-")[1]}, noteArea)
+
+    //timeAbove.textContent = CURRENTNOTE.time;
+    //noteArea.value = CURRENTNOTE.content;
+  } else {
+    CURRENTNOTE = undefined;
+    timeAbove.textContent = "";
+    noteArea.value = "";
+  }
+
 }
 
 function removeNote(note, noteSection) {
@@ -160,7 +199,9 @@ function removeNote(note, noteSection) {
   .then(resp => resp.json())
   .then(json => {
     noteCard.remove()
+    setCNoteAfterRemove(noteSection)
   })
+  .catch(err => console.log(err))
 }
 
 function fetchSingleNote(note, noteArea) {
@@ -169,7 +210,7 @@ function fetchSingleNote(note, noteArea) {
   .then(json => {
     CURRENTNOTE = json
     noteArea.value = json.content
-
+    timeAbove.textContent = CURRENTNOTE.time;
   })
 
 }
@@ -225,10 +266,19 @@ function createNewFolder() {
     const nameInput = document.createElement("input");
     nameInput.type = "text";
     ul.appendChild(nameInput);
+    getFolderCount();
     nameInput.focus();
     nameInput.value = "New Folder " + (FOLDERCOUNT + 1);
     //addANewFolder('blur', nameInput, ul);
     addANewFolder('keypress', nameInput, ul);
+  })
+}
+
+function getFolderCount() {
+  fetch(FOLDERS_URL)
+  .then(resp => resp.json())
+  .then(json => {
+    FOLDERCOUNT = json.length;
   })
 }
 
@@ -247,6 +297,7 @@ function addANewFolder(action, nameInput, ul) {
         li.textContent = nameInput.value;
         nameInput.remove();
         createFolder(ul, li);
+        getFolderCount();
         //ul.appendChild(li);
         //CURRENTNOTE = undefined;
       }
@@ -289,8 +340,7 @@ function buildNote() {
   const timeLabel = document.createElement("span");
   const folderName = document.createElement("p");
 
-  // document.getElementById('add-reminder').style.display = "block";
-
+  CURRENTTITLE = newContent;
   folderName.className = "og-folder";
   console.log(currentTime);
   timeLabel.className = "time-created";
@@ -315,7 +365,7 @@ function buildNote() {
   noteArea.value = "";
   noteArea.focus();
   postNote(noteArea, noteSection, newCard);
-
+  folderName.style.borderBottom = "1px solid black";
 }
 
 function postNote(noteArea, noteSection, newCard) {
@@ -326,7 +376,7 @@ function postNote(noteArea, noteSection, newCard) {
     if (NEWNOTE === true) {
       const noteTitle = newCard.querySelector("p");
       if (noteArea.value.length < 27) {
-        noteTitle.textContent = noteArea.value;
+        CURRENTTITLE.textContent = noteArea.value;
       }
     }
   })
@@ -342,7 +392,8 @@ function postNote(noteArea, noteSection, newCard) {
       } else {
         noteSection.children[0].remove();
         NEWNOTE = false;
-        console.log(NEWNOTE);
+        //console.log(CURRENTNOTE);
+        //setCNoteAfterRemove(noteSection);
       }
     }
     noteArea.removeEventListener('blur', a);
