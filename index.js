@@ -64,9 +64,9 @@ function displayFolder(folder) {
   //console.log(listItem);
   listItem.addEventListener('click', (event) => {
     const div3 = document.querySelector(".div3");
-    if (div3.querySelector("button")) {
-      div3.querySelector("button").remove();
-    }
+    // if (div3.querySelector("button")) {
+    //   div3.querySelector("button").remove();
+    // }
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -181,10 +181,10 @@ function displayNote(note, noteSection, folder) {
   noteCard.appendChild(folderName);
   noteSection.appendChild(noteCard);
   noteCard.addEventListener('click', (event) => {
-    const div3 = document.querySelector(".div3");
-    if (div3.querySelector("button")) {
-      div3.querySelector("button").remove();
-    }
+    // const div3 = document.querySelector(".div3");
+    // if (div3.querySelector("button")) {
+    //   div3.querySelector("button").remove();
+    // }
     CURRENTNOTE = note;
     NEWNOTE = false;
     timeAbove.textContent = CURRENTNOTE.time;
@@ -422,9 +422,10 @@ function postNote(noteArea, noteSection, newCard) {
         if (CURRENTFOLDER) {
           folderId = CURRENTFOLDER.id;
         }
-        if (div.querySelector("button")) {
-          div.querySelector("button").remove();
-        }
+        //removing add reminder button without when creating note without adding reminder
+        // if (div.querySelector("button")) {
+        //   div.querySelector("button").remove();
+        // }
         createNote(event, noteArea, folderId, newCard);
       } else {
         noteSection.children[0].remove();
@@ -502,10 +503,9 @@ function showModal(addReminderButton, newCard) {
   let clearButton = document.getElementById('clear-modal')
 
   modal.style.display = "block";
-
+  console.log(modal);
   clearButton.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    clearModal();
+    clearModal(addReminderButton);
   })
 
   span.addEventListener('click', () => {
@@ -534,10 +534,10 @@ function clearModal(addReminderButton) {
   //clearInterval(Myinterval);
   modal.style.display = "none";
   addReminderButton.remove();
-  document.getElementById('dateSelection').disabled = false;
-  document.getElementById('priority').disabled = false;
-  document.getElementById('alarmHrs').disabled = false;
-  document.getElementById('alarmMins').disabled = false;
+  // document.getElementById('dateSelection').disabled = false;
+  // document.getElementById('priority').disabled = false;
+  // document.getElementById('alarmHrs').disabled = false;
+  // document.getElementById('alarmMins').disabled = false;
   //audio.pause();
 }
 
