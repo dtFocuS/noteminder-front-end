@@ -72,12 +72,6 @@
   width: 100%;
 }
 
-/* .div1 li::selection {
-  user-select: all;
-  background-color: red;
-  width: auto;
-} */
-
 /* Bounce In for Button */
 .hvr-bounce-in {
   display: inline-block;
@@ -97,13 +91,13 @@
 
 .hvr-bounce-in {
     margin-left: 5%;
-    position:absolute;
+    position: absolute;
     bottom: 3%;
 }
 
 .div2 {
   grid-area: 2 / 2 / 7 / 3;
-  background-color: whitesmoke;
+  background-color: lightgoldenrodyellow;
   height: 102.75%;
   width: 100%;
   overflow: scroll;
@@ -127,46 +121,8 @@
   border-bottom: 1px solid black; /* This creates the border. Replace black with whatever color you want.*/
 }
 
-/* Pop */
-/* @-webkit-keyframes hvr-pop {
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-}
-@keyframes hvr-pop {
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-}
-.hvr-pop {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-}
-.hvr-pop:hover, .hvr-pop:focus, .hvr-pop:active {
-  -webkit-animation-name: hvr-pop;
-  animation-name: hvr-pop;
-  -webkit-animation-duration: 0.3s;
-  animation-duration: 0.3s;
-  -webkit-animation-timing-function: linear;
-  animation-timing-function: linear;
-  -webkit-animation-iteration-count: 1;
-  animation-iteration-count: 1;
-}
-
-.hvr-pop {
-  margin-left: 7%;
-  position: absolute;
-  bottom: 5%;
-} */
-
 .div3 {
   grid-area: 2 / 3 / 7 / 6;
-  height: auto;
   word-wrap: normal;
   border:1px solid black;
   background-color: lightgrey;
@@ -174,7 +130,6 @@
   text-align: center;
   width: 100%;
   height: 100%;
-
   position: relative;
 }
 
@@ -188,7 +143,7 @@
   padding: 4%;
   outline: none;
   border: none;
-  height: 100.25%;
+  height: 100%;
   width: 100%;
   background-color: inherit;
   font-size: 18px;
