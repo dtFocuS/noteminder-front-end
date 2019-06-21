@@ -20,6 +20,7 @@ function main() {
   addNote();
   openModal();
   deleteNote();
+  deleteFolder();
 }
 
 function loadFolders() {
@@ -39,6 +40,7 @@ function displayFolder(folder) {
   listItem.id = "folder-" + folder.id;
   listItem.textContent = folder.name;
   CURRENTFOLDER = folder;
+  //console.log(listItem);
   listItem.addEventListener('click', (event) => {
     CURRENTFOLDER = folder;
     loadNotes(folder);
@@ -46,21 +48,70 @@ function displayFolder(folder) {
   folderList.appendChild(listItem);
 }
 
+function deleteFolder() {
+  const deleteFolder = document.getElementById("delete-folder");
+  deleteFolder.addEventListener('click', (event) => {
+    if (CURRENTFOLDER) {
+      removeFolder(CURRENTFOLDER);
+    }
+  })
+}
+
+function removeFolder(folder) {
+  const currentFolder = document.querySelector(`#folder-${folder.id}`);
+  fetch(FOLDERS_URL + "/" + folder.id, {
+    method: "DELETE"
+  })
+  .then(resp => resp.json())
+  .then(json => {
+    currentFolder.remove();
+    afterFolderRemove()
+  })
+}
+
+function afterFolderRemove() {
+  const noteArea = document.getElementById("note-area");
+  const noteSection = document.getElementById("note-detail");
+  CURRENTNOTE = undefined;
+  timeAbove.textContent = "";
+  noteArea.value = "";
+
+  //const ogFolder = document.getElementById("og-folder");
+  while (noteSection.lastChild) {
+    noteSection.removeChild(noteSection.lastChild);
+  }
+}
+
+
 function loadNotes(folder) {
   fetch(NOTES_URL)
   .then(resp => resp.json())
   .then(json => displayNotes(json, folder))
 }
 
+
 function displayNotes(notes, folder) {
   const noteSection = document.getElementById("note-detail");
   const noteArea = document.getElementById("note-area");
+  //const ogFolder = document.getElementById("og-folder");
   let count = 0;
   let firstNote = true;
   while (noteSection.lastChild) {
     noteSection.removeChild(noteSection.lastChild);
   }
   //console.log(notes.length);
+  // if (CURRENTFOLDER === undefined) {
+  //   notes.forEach(note => {
+  //     if (firstNote) {
+  //       CURRENTNOTE = note;
+  //       firstNote = false;
+  //     }
+  //     //count++;
+  //     displayNote(note, noteSection, folder);
+  //
+  //   })
+  // }
+
 
   for (let i = notes.length - 1; i >= 0; i--) {
     if (notes[i].folder_id === folder.id) {
@@ -332,7 +383,7 @@ function buildNote() {
   noteArea.value = "";
   noteArea.focus();
   postNote(noteArea, noteSection, newCard);
-
+  folderName.style.borderBottom = "1px solid black";
 }
 
 function postNote(noteArea, noteSection, newCard) {
