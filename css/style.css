@@ -41,9 +41,16 @@
   /* margin-left: 12%; */
 }
 
+
+.div1 li:hover {	
+  color: black;	
+  cursor: pointer;	
+}	
+
+
 .div1 #folders_title {
   text-decoration: underline;
-}
+
 
 .div1 ul {
     margin: 0;
