@@ -41,6 +41,12 @@
   /* margin-left: 12%; */
 }
 
+.div1 li:hover {	
+  color: black;	
+  cursor: pointer;	
+}	
+
+
 .div1 ul {
     margin: 0;
     padding: 0;
