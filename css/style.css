@@ -41,20 +41,20 @@
   /* margin-left: 12%; */
 }
 
+
 .div1 li:hover {	
   color: black;	
   cursor: pointer;	
 }	
 
 
+.div1 #folders_title {
+  text-decoration: underline;
+
+
 .div1 ul {
     margin: 0;
     padding: 0;
-}
-
-.div1 li:hover {
-  color: black;
-  cursor: pointer;
 }
 
 .div1 button {
@@ -98,7 +98,7 @@
 }
 
 .hvr-bounce-in {
-    margin-left: 5%;
+    margin-left: 6%;
     position: absolute;
     bottom: 3%;
 }
@@ -241,7 +241,7 @@
   margin-top: -3%
 }
 
-.div6 a {
+.div6 #content {
   float: left;
   text-align: center;
   padding: 15px;
@@ -250,6 +250,18 @@
   font-size: 17px;
   margin-top: 1.5%;
   position: absolute;
+}
+
+.div6 #title-icon {
+  float: right;
+  text-align: center;
+  padding: 15px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  margin-top: 2%;
+  margin-right: 5%;
+  text-decoration: underline;
 }
 
 /* The Modal (background) */
