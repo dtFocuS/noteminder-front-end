@@ -1,6 +1,6 @@
-const FOLDERS_URL = "http://localhost:3000/api/v1/folders"
-const NOTES_URL = "http://localhost:3000/api/v1/notes"
-const REMINDERS_URL = "http://localhost:3000/api/v1/reminders"
+const FOLDERS_URL = "https://noteminder-backend.herokuapp.com/api/v1/folders"
+const NOTES_URL = "https://noteminder-backend.herokuapp.com/api/v1/notes"
+const REMINDERS_URL = "https://noteminder-backend.herokuapp.com/api/v1/reminders"
 let CURRENTNOTE = undefined;
 let CURRENTFOLDER = undefined;
 let NEWNOTE = false;
@@ -77,6 +77,11 @@ function displayFolder(folder) {
     // const curFolder = document.querySelector(`li#folder-${CURRENTFOLDER.id}`);
     // curFolder.style.color = "black";
     removeReminderButton();
+    // ALLREMINDERS.forEach(reminder => {
+    //   if (reminder.note_id === note.id) {
+    //     noteTitle.style.color = "red";
+    //   }
+    // })
     CURRENTFOLDER = folder;
     loadNotes(folder);
   })
@@ -368,7 +373,7 @@ function createFolder(ul, li) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({folder: {name: li.textContent, user_id: 1}})
+    body: JSON.stringify({folder: {name: li.textContent, user_id: 2}})
   })
   .then(resp => resp.json())
   .then(json => displayFolder(json))
@@ -553,7 +558,7 @@ function showModal(addReminderButton, newCard) {
   modal.style.display = "block";
   console.log(modal);
   clearButton.addEventListener('click', (ev) => {
-    clearModal(addReminderButton);
+    clearReminder();
   })
 
   span.addEventListener('click', () => {
@@ -575,7 +580,7 @@ function showModal(addReminderButton, newCard) {
   })
 }
 
-function clearModal() {
+function clearReminder() {
   let audio = document.getElementById('audio');
 
   clearInterval(Myinterval);
