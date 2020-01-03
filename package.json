@@ -1,0 +1,19 @@
+{
+  "name": "noteminder-front-end",
+  "version": "1.0.0",
+  "description": "Noteminder is a Javascript application that takes Apple's \"Note\" and \"Reminder\" applications and combines the utility of those of those applications into one. Noteminder has the ability to create notes, and to add reminders to those notes if desired. The reminder function has an audio utility that has a sound go off when the reminder is set off. Noteminder has the ability to create multiple folders and each folder can contain many notes, and each note can have a reminder.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtFocuS/noteminder-front-end.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dtFocuS/noteminder-front-end/issues"
+  },
+  "homepage": "https://github.com/dtFocuS/noteminder-front-end#readme"
+}
