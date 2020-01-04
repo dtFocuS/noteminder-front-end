@@ -14,10 +14,10 @@ let PREVIOUSFOLDER = undefined;
 let dateN = Date().split(" "); //["Thu", "Jun", "20", "2019", "09:57:00", "GMT-0700", "(Pacific", "Daylight", "Time)"]
 let timeN = dateN[4].split(":")[0] + ":" + dateN[4].split(":")[1]; //"09:57"
 let currentTime = dateN[1] + " " + dateN[2] + ", " + dateN[3] + " at " + timeN; //Jun 20, 2019 at 09:56
-// var timeAbove = document.getElementById("date-span");
+const timeAbove = document.getElementById("date-span");
 
 document.addEventListener("DOMContentLoaded", () => {
-  var timeAbove = document.getElementById("date-span");
+  // var timeAbove = document.getElementById("date-span");
   main()
 })
 

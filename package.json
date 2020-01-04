@@ -4,7 +4,9 @@
   "description": "Noteminder is a Javascript application that takes Apple's \"Note\" and \"Reminder\" applications and combines the utility of those of those applications into one. Noteminder has the ability to create notes, and to add reminders to those notes if desired. The reminder function has an audio utility that has a sound go off when the reminder is set off. Noteminder has the ability to create multiple folders and each folder can contain many notes, and each note can have a reminder.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --mode development --open",
+    "start": "webpack -p && node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/dtFocuS/noteminder-front-end/issues"
   },
-  "homepage": "https://github.com/dtFocuS/noteminder-front-end#readme"
+  "homepage": "https://github.com/dtFocuS/noteminder-front-end#readme",
+  "dependencies": {
+    "css-loader": "^3.4.1",
+    "script-loader": "^0.7.2",
+    "style-loader": "^1.1.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  }
 }
